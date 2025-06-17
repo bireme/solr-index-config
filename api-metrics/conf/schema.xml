@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<schema name="api-metrics" version="1.6">
+
+  <types>
+      <fieldType name="string"   class="solr.StrField"        sortMissingLast="true" omitNorms="true" />
+      <fieldType name="boolean"  class="solr.BoolField"       sortMissingLast="true" omitNorms="true" />
+      <fieldType name="int"      class="solr.TrieIntField"    precisionStep="0"   positionIncrementGap="0" />
+      <fieldType name="float"    class="solr.TrieFloatField"  precisionStep="0"   positionIncrementGap="0" />
+      <fieldType name="long"     class="solr.TrieLongField"   precisionStep="0"   positionIncrementGap="0" />
+      <fieldType name="plong"    class="solr.LongPointField"  docValues="true"/>
+      <fieldType name="double"   class="solr.TrieDoubleField" precisionStep="0"   positionIncrementGap="0" />
+      <fieldType name="tint"     class="solr.TrieIntField"    precisionStep="8"   positionIncrementGap="0" />
+      <fieldType name="tfloat"   class="solr.TrieFloatField"  precisionStep="8"   positionIncrementGap="0" />
+      <fieldType name="tlong"    class="solr.TrieLongField"   precisionStep="8"   positionIncrementGap="0" />
+      <fieldType name="tdouble"  class="solr.TrieDoubleField" precisionStep="8"   positionIncrementGap="0" />
+      <fieldType name="date"     class="solr.TrieDateField"   precisionStep="0"   positionIncrementGap="0" />
+
+      <!-- A Trie based date field for faster date range queries and date faceting. -->
+      <fieldType name="tdate"    class="solr.TrieDateField"    precisionStep="6"   positionIncrementGap="0" />
+
+      <fieldType name="text_ws" class="solr.TextField"  positionIncrementGap="100">
+        <analyzer>
+          <tokenizer class="solr.WhitespaceTokenizerFactory" />
+        </analyzer>
+      </fieldType>
+
+      <fieldType name="text"   class="solr.TextField" positionIncrementGap="100">
+        <analyzer type="index">
+          <tokenizer class="solr.WhitespaceTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <filter class="solr.WordDelimiterFilterFactory"         generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" preserveOriginal="1" />
+        </analyzer>
+        <analyzer type="query">
+          <tokenizer class="solr.WhitespaceTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <filter class="solr.WordDelimiterFilterFactory"         generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" preserveOriginal="1" />
+        </analyzer>
+      </fieldType>
+
+      <!-- lowercases the entire field value, keeping it as a single token.  -->
+      <fieldType name="string_lowercase" class="solr.TextField" positionIncrementGap="100">
+        <analyzer>
+          <tokenizer class="solr.KeywordTokenizerFactory" />
+          <filter class="solr.ASCIIFoldingFilterFactory"/>
+          <filter class="solr.LowerCaseFilterFactory" />
+        </analyzer>
+      </fieldType>
+
+      <fieldType name="string_normalized"  class="solr.TextField">
+        <analyzer>
+          <tokenizer class="solr.KeywordTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.PatternReplaceFilterFactory"        pattern="([\.])"      replacement="" replace="all" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <!-- filter class="solr.TrimFilterFactory" / -->
+        </analyzer>
+      </fieldType>
+      <!-- since fields of this type are by default not stored or indexed, any data added to them will be ignored outright.  -->
+      <fieldType name="ignored"   class="solr.StrField" stored="false" indexed="false" />
+  </types>
+
+  <fields>
+      <!-- solr control fields -->
+      <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+      <field name="_version_" type="plong" indexed="false" stored="false"/>
+
+      <!-- metric fields -->
+      <field name="uri" type="string" indexed="true" stored="true" multiValued="false"/>
+      <field name="timestamp" type="date" indexed="true" stored="true" multiValued="false"/>
+      <field name="client_ip" type="string" indexed="false" stored="true" multiValued="false"/>
+      <field name="route_name" type="string" indexed="true" stored="true" multiValued="false"/>
+      <field name="consumer_name" type="string" indexed="true" stored="true" multiValued="false"/>
+      <field name="request_method" type="string" indexed="true" stored="true" multiValued="false"/>
+      <field name="request_time" type="string" indexed="false" stored="true" multiValued="false"/>
+      <field name="response_status" type="string" indexed="true" stored="true" multiValued="false"/>
+      <field name="query_string" type="string" indexed="true" stored="true" multiValued="false"/>
+
+      <!-- dynamic field definitions -->
+      <dynamicField name="*" type="text" indexed="true" stored="true" multiValued="false"/>
+
+  </fields>
+
+  <!-- field to use to determine and enforce document uniqueness. -->
+  <uniqueKey>id</uniqueKey>
+
+  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
+  <solrQueryParser q.op="AND"/>
+  <uniqueKey>id</uniqueKey>
+
+</schema>
