@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema name="bvs" version="2.0">
+   <types>
+      <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true" />
+      <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" omitNorms="true" />
+      <fieldType name="int" class="solr.IntPointField" />
+      <fieldType name="float" class="solr.FloatPointField"  />
+      <fieldType name="long" class="solr.LongPointField"  />
+      <fieldType name="plong" class="solr.LongPointField" docValues="true" />
+      <fieldType name="double" class="solr.DoublePointField"  />
+      <fieldType name="tint" class="solr.IntPointField"  />
+      <fieldType name="tfloat" class="solr.FloatPointField"  />
+      <fieldType name="tlong" class="solr.LongPointField"  />
+      <fieldType name="tdouble" class="solr.DoublePointField" />
+      <fieldType name="date" class="solr.DatePointField" />
+      <!-- A Trie based date field for faster date range queries and date faceting. -->
+      <fieldType name="tdate" class="solr.DatePointField" />
+      <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
+         <analyzer>
+            <tokenizer class="solr.WhitespaceTokenizerFactory" />
+         </analyzer>
+      </fieldType>
+      <fieldType name="decs" class="solr.TextField" omitNorms="false">
+	     <analyzer type="index">
+            <!-- org.bireme.dia.analysis.DeCSAnalyzer -->
+            <tokenizer class="solr.KeywordTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <filter class="org.bireme.dia.filters.SynonymFilterFactory"
+                           getDescriptor="true"
+                           getQualifiers="true"
+                           getJoinDescrQual="true"
+                           getSynonyms="true"
+                           getCategory="true"
+                           getAbbreviation="true"
+		           splitWords="true"
+		           splitHifen="true"
+		           toLowerCase="true"
+		           fixPrefixSuffix="true"/>
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <!--filter class="org.bireme.dia.filters.PrefixSuffixFilter" /-->
+	    <filter class="solr.LengthFilterFactory" min="2" max="100" />
+         </analyzer>
+         <analyzer type="query">
+            <tokenizer class="solr.WhitespaceTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+         </analyzer>
+      </fieldType>
+      <fieldType name="decs_simple" class="solr.TextField" omitNorms="false">
+         <analyzer type="index">
+		    <!-- org.bireme.dia.analysis.DeCSSimpleAnalyzer -->
+            <tokenizer class="solr.KeywordTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <filter class="org.bireme.dia.filters.SynonymFilterFactory"
+                           getDescriptor="true"
+                           getQualifiers="true"
+                           getJoinDescrQual="true"
+                           toLowerCase="true"  />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <!--filter class="org.bireme.dia.filters.PrefixSuffixFilter" /-->
+            <filter class="solr.LengthFilterFactory" min="2" max="100" />
+         </analyzer>
+         <analyzer type="query">
+            <tokenizer class="solr.KeywordTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+         </analyzer>
+      </fieldType>
+      <fieldType name="decs_keyword" class="solr.TextField">
+         <analyzer type="index">
+		    <!-- org.bireme.dia.analysis.DeCSKeywordAnalyzer -->
+            <tokenizer class="solr.KeywordTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <filter class="org.bireme.dia.filters.SynonymFilterFactory"
+                           getDescriptor="true"
+                           getQualifiers="true"
+                           getJoinDescrQual="true"
+                           getSynonyms="true"
+                           getCategory="true"
+                           getAbbreviation="true"
+                           toLowerCase="true"  />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <!--filter class="org.bireme.dia.filters.PrefixSuffixFilter" /-->
+            <filter class="solr.LengthFilterFactory" min="2" max="100" />
+         </analyzer>
+         <analyzer type="query">
+            <tokenizer class="solr.KeywordTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+         </analyzer>
+      </fieldType>
+      <fieldType name="decs_code" class="solr.TextField" omitNorms="true">
+         <analyzer type="index">
+            <tokenizer class="solr.PatternTokenizerFactory" pattern="(\^d[0-9]+)" group="1" />
+            <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
+         </analyzer>
+      </fieldType>
+      <fieldType name="decs_qualifier" class="solr.TextField">
+         <analyzer type="index">
+		    <!-- org.bireme.dia.analysis.DeCSQualifierAnalyzer -->
+            <tokenizer class="solr.KeywordTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <filter class="org.bireme.dia.filters.SynonymFilterFactory"
+                           getDescriptor="true"
+                           getQualifiers="true"
+                           getJoinDescrQual="true"
+                           getSynonyms="true"
+			   acceptOnlyPrecoded="true"
+                           toLowerCase="true"  />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <!--filter class="org.bireme.dia.filters.PrefixSuffixFilter" /-->
+            <filter class="solr.LengthFilterFactory" min="2" max="100" /> 
+         </analyzer>
+         <analyzer type="query">
+            <tokenizer class="solr.KeywordTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+         </analyzer>
+      </fieldType>
+      <fieldType name="decs_authorized_category" class="solr.TextField">
+	     <analyzer type="index">
+            <!-- org.bireme.dia.analysis.DeCSAuthorizedTermAndCategoryAnalyzer" -->
+            <tokenizer class="solr.KeywordTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <filter class="org.bireme.dia.filters.SynonymFilterFactory"
+                           getDescriptor="true"
+                           getCategory="true"
+                           toLowerCase="true"  />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <!--filter class="org.bireme.dia.filters.PrefixSuffixFilter" /-->
+            <filter class="solr.LengthFilterFactory" min="2" max="100" />
+         </analyzer>
+         <analyzer type="query">
+            <tokenizer class="solr.KeywordTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+         </analyzer>
+      </fieldType>
+      <fieldType name="dateiso" class="solr.TextField">
+         <analyzer type="index">
+            <tokenizer class="solr.PatternTokenizerFactory" pattern="(^[0-9]{4})" group="1" />
+         </analyzer>
+      </fieldType>
+      <fieldType name="text" class="solr.TextField" positionIncrementGap="100">
+         <analyzer type="index">
+            <tokenizer class="solr.WhitespaceTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" preserveOriginal="1" />
+			<filter class="org.bireme.dia.filters.PrefixSuffixFilterFactory" />
+			<filter class="solr.LengthFilterFactory" min="2" max="100" /> 
+         </analyzer>
+         <analyzer type="query">
+            <tokenizer class="solr.WhitespaceTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" preserveOriginal="1" />
+			<filter class="org.bireme.dia.filters.PrefixSuffixFilterFactory" />
+			<filter class="solr.LengthFilterFactory" min="2" max="100" /> 
+         </analyzer>
+      </fieldType>
+      <!-- lowercases the entire field value, keeping it as a single token.  -->
+      <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100">
+         <analyzer>
+            <tokenizer class="solr.KeywordTokenizerFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+         </analyzer>
+      </fieldType>
+      <fieldType name="text_with_decs" class="solr.TextField">
+	     <analyzer type="index">
+            <!-- org.bireme.dia.analysis.BVSStandardAnalyzer" -->
+            <tokenizer class="solr.WhitespaceTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <filter class="org.bireme.dia.filters.SynonymFilterFactory"
+                           getDescriptor="true"
+                           getQualifiers="true"
+                           getJoinDescrQual="true"
+                           getSynonyms="true"
+                           getCategory="true"
+		           getAbbreviation="true"
+		           acceptOnlyPrecoded="true"
+                           splitWords="true"
+                           splitHifen="true"
+                           toLowerCase="true"
+		           fixPrefixSuffix="true" />
+	    <filter class="solr.WordDelimiterGraphFilterFactory"
+                           generateWordParts="1"
+                           generateNumberParts="0"
+                           stemEnglishPossessive="1"
+                           catenateAll="1"
+		           preserveOriginal="1"
+                           adjustOffsets="1"
+		           types="conf/WordDelimiterGraphFilterFactory.cfg"  />
+	    <filter class="solr.ASCIIFoldingFilterFactory" />
+            <!--filter class="org.bireme.dia.filters.PrefixSuffixFilter" /-->
+            <filter class="solr.LengthFilterFactory" min="2" max="100" />
+         </analyzer>
+         <analyzer type="query">
+            <tokenizer class="solr.WhitespaceTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" preserveOriginal="1" />
+         </analyzer>
+      </fieldType>
+      <fieldType name="string_normalized" class="solr.TextField">
+         <analyzer>
+            <tokenizer class="solr.KeywordTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.PatternReplaceFilterFactory" pattern="([\.])" replacement="" replace="all" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <!-- filter class="solr.TrimFilterFactory" / -->
+         </analyzer>
+      </fieldType>
+      <fieldType name="multilanguage" class="solr.TextField">
+         <analyzer type="index">
+            <tokenizer class="solr.PatternTokenizerFactory" pattern="\^[pei]\s*" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+         </analyzer>
+      </fieldType>
+      <!-- spellchecker -->
+      <fieldType name="textSpell" class="solr.TextField" positionIncrementGap="100">
+         <analyzer>
+            <tokenizer class="solr.WhitespaceTokenizerFactory" />
+            <filter class="solr.ASCIIFoldingFilterFactory" />
+            <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" />
+            <filter class="solr.LowerCaseFilterFactory" />
+         </analyzer>
+      </fieldType>
+      <!-- spellchecker useful for names & titles -->
+      <fieldType name="textSpellPhrase" class="solr.TextField" positionIncrementGap="100" stored="false" multiValued="true">
+         <analyzer>
+            <tokenizer class="solr.KeywordTokenizerFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+         </analyzer>
+      </fieldType>
+      <fieldType name="st_1nivel" class="solr.TextField">
+         <analyzer type="index">
+            <tokenizer class="solr.PatternTokenizerFactory" pattern="(^[A-B][1-9])" group="1" />
+         </analyzer>
+      </fieldType>
+      <fieldType name="st_2nivel" class="solr.TextField">
+         <analyzer type="index">
+            <tokenizer class="solr.PatternTokenizerFactory" pattern="(^[A-B][1-9].[1-9])" group="1" />
+         </analyzer>
+      </fieldType>
+      <fieldType name="st_3nivel" class="solr.TextField">
+         <analyzer type="index">
+            <tokenizer class="solr.PatternTokenizerFactory" pattern="(^[A-B][1-9].[1-9].[1-9])" group="1" />
+         </analyzer>
+      </fieldType>
+      <fieldType name="st_4nivel" class="solr.TextField">
+         <analyzer type="index">
+            <tokenizer class="solr.PatternTokenizerFactory" pattern="(^[A-B][1-9.]{6,})" group="1" />
+         </analyzer>
+      </fieldType>
+      <!-- since fields of this type are by default not stored or indexed, any data added to them will be ignored outright.  -->
+      <fieldType name="ignored" class="solr.StrField" stored="false" indexed="false" />
+   </types>
+   <!-- Definicoes de campos indexaveis armazenaveis e etc -->
+   <fields>
+      <!-- solr control fields -->
+      <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+      <field name="_version_" type="plong" indexed="false" stored="false" />
+      <field name="id_pprint" type="string" indexed="true" stored="true" multiValued="true" />
+      <field name="id_published" type="string" indexed="true" stored="true" multiValued="true" />
+      <field name="id_pk" type="string" indexed="true" stored="true" />
+      <field name="alternate_id" type="string" indexed="true" stored="true" multiValued="true" />
+      <field name="auid" type="string" indexed="true" stored="true" multiValued="true" />
+      <field name="aid" type="string" indexed="true" stored="true" />
+      <field name="db" type="string" indexed="true" stored="true" multiValued="true" />
+      <field name="bvs" type="string" indexed="true" stored="true" />
+      <field name="instance" type="string" indexed="true" stored="true" multiValued="true" />
+      <field name="collection" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_fio" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_uruguai" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_perinatal" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_ses" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_sms" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_smu" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_puertorico" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_ecuador" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_oncologiauy" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_odontouy" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_enfermeriauy" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_iec" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_bvsnacuy" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_bvsms" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="collection_mtc" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="copyright" type="text" indexed="true" stored="true" multiValued="true" />
+      <field name="declaration" type="text" indexed="true" stored="true" multiValued="true" />
+      <field name="tombo" type="string" indexed="true" stored="true" multiValued="true" />
+      <field name="type" type="string" indexed="true" stored="true" multiValued="true" />
+      <field name="au" type="text" indexed="true" stored="true" multiValued="true" />
+      <field name="email" type="text" indexed="false" stored="true" multiValued="true" />
+      <field name="ti" type="text" indexed="true" stored="true" multiValued="true" termVectors="true" />
+      <field name="ab" type="text" indexed="true" stored="true" multiValued="true" termVectors="true" />
+      <field name="ab_plain" type="text" indexed="true" stored="true" multiValued="true" />
+      <field name="otherab" type="text" indexed="true" stored="true" multiValued="true" termVectors="true" />
+      <field name="mark_ab" type="text" indexed="false" stored="true" multiValued="true" />
+      <field name="tl" type="string" indexed="true" stored="true" multiValued="true" />
+      <field name="fo" type="text" indexed="false" stored="true" multiValued="true" />
+      <field name="la" type="lowercase" indexed="true" stored="true" multiValued="true" />
+      <field name="la_ab" type="lowercase" indexed="false" stored="true" multiValued="true" />
+      <field name="ur" type="string" indexed="false" stored="true" multiValued="true" />
+      <field name="ur_AUDIO" type="string" indexed="false" stored="true" multiValued="true" />
+      <field name="ur_MULTIMIDIA" type="string" indexed="false" stored="true" multiValued="true" />
+      <field name="ta" type="string_normalized" indexed="true" stored="true" multiValued="true" />
+      <field name="ta_var" type="string_normalized" indexed="true" stored="false" multiValued="true" />
+      <field name="ai" type="string" indexed="true" stored="true" multiValued="true" />
+      <field name="da" type="string" indexed="true" stored="true" multiValued="false" />
+      <field name="cp" type="string" indexed="true" stored="true" multiValued="true" />
+      <field name="pg" type="string" indexed="false" stored="true" multiValued="true" />
+      <field name="co" type="text" indexed="true" stored="true" multiValued="true" />
+      <field name="cc" type="string" indexed="true" stored="true" multiValued="true" />
+      <field name="lo" type="string" indexed="false" stored="true" multiValued="true" />
+      <field name="vi" type="string" indexed="false" stored="true" multiValued="true" />
+      <field name="fa" type="string" indexed="false" stored="true" multiValued="true" />
+      <field name="is" type="string" indexed="false" stored="true" multiValued="true" />
+      <field name="ip" type="string" indexed="false" stored="true" multiValued="true" />
+      <field name="entry_date" type="string" indexed="true" stored="true" multiValued="false" />
+      <field name="update_date" type="string" indexed="true" stored="true" multiValued="false" />
+      <field name="afiliacao_autor" type="string" indexed="false" stored="true" multiValued="true" />
+      <field name="nivel_tratamento" type="string" indexed="false" stored="true" multiValued="false" />
+      <field name="book_title" type="string" indexed="false" stored="true" multiValued="false" />
+      <!-- Thesis indexes -->
+      <field name="th_le" type="string" indexed="true" stored="true" multiValued="true" />
+      <field name="th_in" type="text" indexed="true" stored="true" multiValued="true" />
+      <field name="th_ti" type="string" indexed="true" stored="true" multiValued="true" />
+      <!-- affiliation country index -->
+      <field name="afp" type="multilanguage" indexed="true" stored="false" multiValued="true" />
+      <field name="kw" type="text" indexed="true" stored="true" multiValued="true" termVectors="true" />
+      <field name="nm" type="text" indexed="true" stored="false" multiValued="true" />
+      <field name="services" type="string" indexed="false" stored="true" multiValued="true" />
+      <!-- decs fields -->
+      <!--<field name="mj" type="decs_authorized_category" indexed="true"  stored="false" multiValued="true"  termVectors="true" />-->
+      <field name="mj" type="decs_keyword" indexed="true" stored="false" multiValued="true" termVectors="true" />
+      <field name="mh" type="decs_keyword" indexed="true" stored="true" multiValued="true" termVectors="true" />
+      <field name="pt" type="decs_keyword" indexed="true" stored="true" multiValued="true" />
+      <field name="mh_words" type="decs" indexed="true" stored="false" multiValued="true" />
+      <field name="ct" type="decs" indexed="true" stored="true" multiValued="true" termVectors="true" />
+      <field name="sh" type="decs_qualifier" indexed="true" stored="true" multiValued="true" termVectors="true" />
+      <!-- sort -->
+      <field name="order_sjr" type="tfloat" indexed="true" stored="true" multiValued="false" docValues="true" />
+      <field name="weight" type="tfloat" indexed="true" stored="true" multiValued="false" docValues="true" />
+      <field name="related_research" type="text" indexed="false" stored="true" multiValued="true" />
+      <field name="related_resource" type="text" indexed="false" stored="true" multiValued="true" />
+      <field name="license" type="text" indexed="false" stored="true" multiValued="true" />
+      <!-- cluster list -->
+      <field name="tag" type="string" indexed="true" stored="false" multiValued="true" />
+      <!--<field name="tag_sms" type="string" indexed="true" stored="false" multiValued="true" required="false" />-->
+      <field name="year_cluster" type="dateiso" indexed="true" stored="false" multiValued="true" />
+      <field name="mj_cluster" type="decs_code" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="limit" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="pt_cluster" type="decs_code" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="ta_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="ai_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="fulltext" type="string" indexed="true" stored="false" multiValued="false" required="false" />
+      <field name="no_indexing" type="string" indexed="true" stored="false" multiValued="false" required="false" />
+      <field name="_clinical_aspect" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="aspect" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="type_of_study" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="pais_afiliacao" type="string" indexed="true" stored="true" multiValued="true" required="false" />
+      <field name="instituicao_pais_afiliacao" type="string" indexed="true" stored="true" multiValued="true" required="false" />
+      <field name="af" type="text" indexed="true" stored="true" multiValued="true" />
+      <field name="af_cluster" type="string" indexed="true" stored="true" multiValued="true" />
+      <field name="jd" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="pais_assunto" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- Exclusivos de GHL -->
+      <field name="mh_cluster" type="decs_code" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="pais_lingua_portuguesa" type="string" indexed="true" stored="false" multiValued="true" />
+      <field name="regional_office" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- Fontes de Informacao (FIOCruz) -->
+      <field name="tag_fiocruz" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="individuo" type="text" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="individuo_cluster" type="string" indexed="true" stored="true" multiValued="true" required="false" />
+      <field name="descritor_local" type="text" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="ot" type="text" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="descritor_local_cluster" type="string" indexed="true" stored="true" multiValued="true" required="false" />
+      <!-- CARPHA -->
+      <field name="carpha_author_location" type="string" indexed="true" stored="true" multiValued="true" required="false" />
+      <field name="carpha_country_focus" type="string" indexed="true" stored="true" multiValued="true" required="false" />
+      <field name="carpha_geral" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="carpha_language" type="string" indexed="true" stored="true" multiValued="true" required="false" />
+      <field name="carpha_type_document" type="string" indexed="true" stored="true" multiValued="true" required="false" />
+      <!-- APS -->
+      <field name="tag_aps" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_aps" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- Brasil -->
+      <field name="tag_brasil" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tema_brasil" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- Saude Publica -->
+      <field name="tag_sp" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- Secretaria de Saude de Sao Paulo -->
+      <field name="tag_sessp" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- Odontologia -->
+      <field name="tema_odontologia" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- HANSENIASE - - nao esta disponivel (iahx antiga ainda) -->
+      <field name="tag_hanseniase" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- MTC -->
+      <field name="tag_mtc" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_rhs" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_mtc_tema1" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_mtc_tema2" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_mtc_tema3" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_mtc_tema4" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_mtc_elementos" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_mtc_transversales" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="ec" type="string" indexed="true" stored="false" multiValued="false" required="false" />
+      <!-- Economia -->
+      <field name="economia_tag" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- CONASS-BIBSUS-2019 -->
+      <field name="tag_conass" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- temas prioritarios - 2019 -->
+      <field name="tag_temasprioritarios" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_ods3" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_assa2030" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="evideasy_perguntas" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- APS - 05/2018 -->
+      <field name="ciap2" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="teleconsultor" type="string" indexed="true" stored="true" multiValued="true" required="false" />
+      <field name="categoria_da_evidencia" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- ENFERMERIA - 10/2019 -->
+      <field name="collection_enfermeria" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- HANSENIASE - 01/2020 -->
+      <field name="collection_hanseniase" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- CONASS - 05/2019 -->
+      <field name="collection_conass" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- END cluster list -->
+      <field name="revsys_epistem" type="string" indexed="true" stored="false" multiValued="false" required="false" />
+      <!-- controlecancer -->
+      <field name="tag_controlecancer" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- saude ambiental -->
+      <field name="tag_saudeambiental" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- PERU - 10/2020 -->
+      <field name="collection_peru" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- Argentina - 10/2020 -->
+      <field name="collection_argentina" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- GIM - 02/2021 -->
+      <field name="collection_gim" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- Economia - 02/2021 -->
+      <field name="collection_economia" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- redetsa - 03/2021 -->
+      <field name="collection_redetsa" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- nicaragua- 10/2021 -->
+      <field name="collection_nicaragua" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- honduras - 05/2022 -->
+      <field name="collection_honduras" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- cns-br - 10/2021 -->
+      <field name="collection_cns-br" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- bolivia - 11/2021 -->
+      <field name="collection_bolivia" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- mocambique - 03/2023 -->
+      <field name="collection_mocambique" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- mocambique - 05/2023 -->
+      <field name="collection_controlecancer" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- costarica - 07/2023 -->
+      <field name="collection_costarica" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- ND - neglected_diseases -->
+      <field name="tag_contexto" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_tema_saude" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- enfermeria - sem cluster, apenas para pesquisa via link -->
+      <field name="tag_enfermeria" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- tag_comunidade - comecou com a CNS-BR -->
+      <field name="tag_comunidade" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- tag_colecao - comecou com a CNS-BR -->
+      <field name="tag_colecao" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="pbm" type="string" indexed="true" stored="false" multiValued="false" />
+      <!-- spellchecker -->
+      <!--<field name="spell" type="textSpell" indexed="true" stored="false" multiValued="true" />
+      <field name="spell_phrase" type="textSpellPhrase" indexed="true" stored="false" multiValued="true" />-->
+      <!-- catch all fields containing: -->
+      <!--    other searchable text fields (implemented via copyField further on in this schema) -->
+      <field name="tw" type="text_with_decs" indexed="true" stored="false" multiValued="true" />
+      <!--    cn_?? kind -->
+      <field name="cn" type="text" indexed="true" stored="false" multiValued="true" />
+      <!--    pr_?? kind -->
+      <field name="pr" type="text" indexed="true" stored="false" multiValued="true" />
+      <!-- Dynamic field definitions -->
+      <dynamicField name="ab_*" type="text" indexed="false" stored="true" multiValued="true" />
+      <dynamicField name="mark_ab_*" type="text" indexed="false" stored="true" multiValued="true" />
+      <dynamicField name="ti_*" type="text" indexed="false" stored="true" multiValued="true" />
+      <dynamicField name="cn_*" type="text" indexed="false" stored="true" multiValued="true" />
+      <dynamicField name="pr_*" type="text" indexed="false" stored="true" multiValued="true" />
+      <dynamicField name="*" type="ignored" multiValued="true" />
+      <!-- terminology synonym fields  -->
+      <dynamicField name="decs_syn_*" type="text" indexed="true" stored="false" multiValued="true" />
+   </fields>
+   <!-- field to use to determine and enforce document uniqueness. -->
+   <uniqueKey>id</uniqueKey>
+   <!-- field for the QueryParser to use when an explicit fieldname is absent -->
+   <df>tw</df>
+   <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
+   <solrQueryParser q.op="AND" />
+   <!-- general copyField -->
+   <copyField source="ti" dest="tw" />
+   <copyField source="ti_*" dest="tw" />
+   <!--<copyField source="au" dest="tw" />-->
+   <copyField source="ab" dest="tw" />
+   <copyField source="ab_*" dest="tw" />
+   <copyField source="otherab" dest="tw" />
+   <copyField source="ct" dest="tw" />
+   <copyField source="pt" dest="tw" />
+   <copyField source="mj" dest="tw" />
+   <copyField source="mh" dest="tw" />
+   <copyField source="kw" dest="tw" />
+   <copyField source="nm" dest="tw" />
+   <!--<copyField source="af" dest="tw" />-->
+   <copyField source="ti_*" dest="ti" />
+   <copyField source="ab_*" dest="ab" />
+   <!-- adiciona os descritores principais no indice mh -->
+   <copyField source="mj" dest="mh" />
+   <!-- adiciona os limites no indice mh -->
+   <copyField source="ct" dest="mh" />
+   <!-- permite a pesquisa por palavras do assunto -->
+   <copyField source="mh" dest="mh_words" />
+   <copyField source="mj" dest="mh_words" />
+   <copyField source="ct" dest="mh_words" />
+   <!-- permite a pesquisa dos indices FIOCruz campo todo -->
+   <copyField source="individuo" dest="individuo_cluster" />
+   <copyField source="descritor_local" dest="descritor_local_cluster" />
+   <!-- copia os dados de afiliacao para campo de cluster -->
+   <copyField source="af" dest="af_cluster" />
+   <!-- copia os codigos decs para o campo de cluster  -->
+   <copyField source="mj" dest="mj_cluster" />
+   <copyField source="pt" dest="pt_cluster" />
+   <copyField source="da" dest="year_cluster" />
+   <copyField source="ta" dest="ta_cluster" />
+   <copyField source="ai" dest="ai_cluster" />
+   <!-- Eventos -->
+   <copyField source="cn_*" dest="cn" />
+   <!-- Projetos -->
+   <copyField source="pr_*" dest="pr" />
+   <!-- indice de revista -->
+   <copyField source="ta_var" dest="ta" />
+   <!-- cria indice de busca por subheading -->
+   <copyField source="mh" dest="sh" />
+   <!-- copia sinomimos dos termos decs para tw -->
+   <copyField source="decs_syn_*" dest="tw" />
+   <copyField source="pais_afiliacao" dest="afp" />
+   <!-- spellchecker -->
+   <copyField source="ti" dest="spell" />
+   <copyField source="au" dest="spell" />
+   <copyField source="ti" dest="spell_phrase" />
+   <copyField source="au" dest="spell_phrase" />
+   <!-- Especificos de GHL -->
+   <copyField source="mj" dest="mh_cluster" />
+</schema>
