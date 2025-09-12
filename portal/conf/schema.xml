@@ -301,6 +301,10 @@
       <field name="email" type="text" indexed="false" stored="true" multiValued="true" />
       <field name="ti" type="text" indexed="true" stored="true" multiValued="true" termVectors="true" />
       <field name="ab" type="text" indexed="true" stored="true" multiValued="true" termVectors="true" />
+      <field name="super_ab" type="text" indexed="true" stored="true" multiValued="true" termVectors="true" />
+      <field name="super_ab_en" type="text" indexed="true" stored="true"   multiValued="true"   termVectors="true" />
+      <field name="super_ab_es" type="text" indexed="true" stored="true"   multiValued="true"   termVectors="true" />
+      <field name="super_ab_pt" type="text" indexed="true" stored="true"   multiValued="true"   termVectors="true" />
       <field name="ab_plain" type="text" indexed="true" stored="true" multiValued="true" />
       <field name="otherab" type="text" indexed="true" stored="true" multiValued="true" termVectors="true" />
       <field name="mark_ab" type="text" indexed="false" stored="true" multiValued="true" />
@@ -313,6 +317,7 @@
       <field name="ur_MULTIMIDIA" type="string" indexed="false" stored="true" multiValued="true" />
       <field name="ta" type="string_normalized" indexed="true" stored="true" multiValued="true" />
       <field name="ta_var" type="string_normalized" indexed="true" stored="false" multiValued="true" />
+      <field name="ta_fascic" type="string" indexed="true" stored="true" multiValued="true" />
       <field name="ai" type="string" indexed="true" stored="true" multiValued="true" />
       <field name="da" type="string" indexed="true" stored="true" multiValued="false" />
       <field name="cp" type="string" indexed="true" stored="true" multiValued="true" />
@@ -352,6 +357,7 @@
       <field name="related_research" type="text" indexed="false" stored="true" multiValued="true" />
       <field name="related_resource" type="text" indexed="false" stored="true" multiValued="true" />
       <field name="license" type="text" indexed="false" stored="true" multiValued="true" />
+      <field name="status_fiadmin" type="text" indexed="true" stored="true" multiValued="false" />
       <!-- cluster list -->
       <field name="tag" type="string" indexed="true" stored="false" multiValued="true" />
       <!--<field name="tag_sms" type="string" indexed="true" stored="false" multiValued="true" required="false" />-->
@@ -367,6 +373,7 @@
       <field name="aspect" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="type_of_study" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="pais_afiliacao" type="string" indexed="true" stored="true" multiValued="true" required="false" />
+      <field name="pais_publicacao" type="string" indexed="true" stored="true" multiValued="true" required="false" />
       <field name="instituicao_pais_afiliacao" type="string" indexed="true" stored="true" multiValued="true" required="false" />
       <field name="af" type="text" indexed="true" stored="true" multiValued="true" />
       <field name="af_cluster" type="string" indexed="true" stored="true" multiValued="true" />
@@ -462,6 +469,8 @@
       <field name="collection_controlecancer" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <!-- costarica - 07/2023 -->
       <field name="collection_costarica" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- costarica - 05/2025 -->
+      <field name="collection_saude_indigena" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <!-- ND - neglected_diseases -->
       <field name="tag_contexto" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="tag_tema_saude" type="string" indexed="true" stored="false" multiValued="true" required="false" />
@@ -472,6 +481,14 @@
       <!-- tag_colecao - comecou com a CNS-BR -->
       <field name="tag_colecao" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="pbm" type="string" indexed="true" stored="false" multiValued="false" />
+      <!-- tag_dimensions - comecou com a TMGL -->
+      <field name="tag_dimensions" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- who_regions - comecou com a TMGL -->
+      <field name="who_regions" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="traditional_medicines" type="string" indexed="true" stored="false" multiValued="false" required="false" />
+      <field name="traditional_medicines_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="si_dsei" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="si_controle_social" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <!-- spellchecker -->
       <!--<field name="spell" type="textSpell" indexed="true" stored="false" multiValued="true" />
       <field name="spell_phrase" type="textSpellPhrase" indexed="true" stored="false" multiValued="true" />-->
