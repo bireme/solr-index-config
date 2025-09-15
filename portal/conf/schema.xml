@@ -152,16 +152,16 @@
             <filter class="solr.ASCIIFoldingFilterFactory" />
             <filter class="solr.LowerCaseFilterFactory" />
             <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" preserveOriginal="1" />
-			<filter class="org.bireme.dia.filters.PrefixSuffixFilterFactory" />
-			<filter class="solr.LengthFilterFactory" min="2" max="100" /> 
+			<!-- filter class="org.bireme.dia.filters.PrefixSuffixFilterFactory" / -->
+			<!-- filter class="solr.LengthFilterFactory" min="2" max="100" / -->
          </analyzer>
          <analyzer type="query">
             <tokenizer class="solr.WhitespaceTokenizerFactory" />
             <filter class="solr.ASCIIFoldingFilterFactory" />
             <filter class="solr.LowerCaseFilterFactory" />
             <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" preserveOriginal="1" />
-			<filter class="org.bireme.dia.filters.PrefixSuffixFilterFactory" />
-			<filter class="solr.LengthFilterFactory" min="2" max="100" /> 
+			<!-- filter class="org.bireme.dia.filters.PrefixSuffixFilterFactory" / -->
+			<!-- filter class="solr.LengthFilterFactory" min="2" max="100" / -->
          </analyzer>
       </fieldType>
       <!-- lowercases the entire field value, keeping it as a single token.  -->
@@ -267,7 +267,7 @@
    <fields>
       <!-- solr control fields -->
       <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
-      <field name="_version_" type="plong" indexed="false" stored="false" />
+      <field name="_version_" type="plong" indexed="true" stored="true" />
       <field name="id_pprint" type="string" indexed="true" stored="true" multiValued="true" />
       <field name="id_published" type="string" indexed="true" stored="true" multiValued="true" />
       <field name="id_pk" type="string" indexed="true" stored="true" />
@@ -365,7 +365,7 @@
       <field name="mj_cluster" type="decs_code" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="limit" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="pt_cluster" type="decs_code" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="ta_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="ta_cluster" type="string" indexed="true" stored="true" multiValued="true" required="false" />
       <field name="ai_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="fulltext" type="string" indexed="true" stored="false" multiValued="false" required="false" />
       <field name="no_indexing" type="string" indexed="true" stored="false" multiValued="false" required="false" />
@@ -382,7 +382,7 @@
       <!-- Exclusivos de GHL -->
       <field name="mh_cluster" type="decs_code" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="pais_lingua_portuguesa" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="regional_office" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="regional_office" type="string" indexed="true" stored="true" multiValued="true" required="false" />
       <!-- Fontes de Informacao (FIOCruz) -->
       <field name="tag_fiocruz" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="individuo" type="text" indexed="true" stored="false" multiValued="true" required="false" />
@@ -481,8 +481,8 @@
       <!-- tag_colecao - comecou com a CNS-BR -->
       <field name="tag_colecao" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="pbm" type="string" indexed="true" stored="false" multiValued="false" />
-      <!-- tag_dimensions - comecou com a TMGL -->
-      <field name="tag_dimensions" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <!-- tag_dimensions (ver grafia) - comecou com a TMGL -->
+      <field name="tag_dimentions" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <!-- who_regions - comecou com a TMGL -->
       <field name="who_regions" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="traditional_medicines" type="string" indexed="true" stored="false" multiValued="false" required="false" />
