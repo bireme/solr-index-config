@@ -110,7 +110,6 @@
                            getJoinDescrQual="true"
                            getSynonyms="true"
                            acceptOnlyPrecoded="true"
-                           splitWords="true"
                            toLowerCase="true"  />
             <filter class="solr.ASCIIFoldingFilterFactory" />
             <!--filter class="org.bireme.dia.filters.PrefixSuffixFilter" /-->
