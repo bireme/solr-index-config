@@ -36,7 +36,7 @@
 		           splitWords="true"
 		           splitHifen="true"
 		           toLowerCase="true"
-		           fixPrefixSuffix="true"/>
+		           fixPrefixSuffix="false"/>
             <filter class="solr.ASCIIFoldingFilterFactory" />
             <!--filter class="org.bireme.dia.filters.PrefixSuffixFilter" /-->
 	    <filter class="solr.LengthFilterFactory" min="2" max="100" />
@@ -188,7 +188,7 @@
                            splitWords="true"
                            splitHifen="true"
                            toLowerCase="true"
-		           fixPrefixSuffix="true" />
+		           fixPrefixSuffix="false" />
 	    <filter class="solr.WordDelimiterGraphFilterFactory"
                            generateWordParts="1"
                            generateNumberParts="0"
