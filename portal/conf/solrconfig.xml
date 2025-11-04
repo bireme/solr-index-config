@@ -443,6 +443,7 @@
      <lst name="defaults">
        <str name="echoParams">explicit</str>
        <str name="df">tw</str>
+       <str name="q.op">AND</str>
        <str name="facet">true</str>
        <str name="facet.field">carpha_type_document</str>
        <!-- str name="f.carpha_type_document.facet.limit">40</str --><!-- muda qtde a exibir -->
@@ -629,7 +630,7 @@
        <str name="facet.field">pais_afiliacao</str>
        <str name="facet.field">instituicao_pais_afiliacao</str>
        <str name="facet.limit">10</str>
-       <str name="facet.mincount">1</str>       
+       <str name="facet.mincount">1</str>
        <!-- APS 05/2018 -->
        <str name="facet.field">ciap2</str>
        <str name="facet.field">teleconsultor</str>

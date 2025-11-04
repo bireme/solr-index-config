@@ -113,7 +113,7 @@
                            toLowerCase="true"  />
             <filter class="solr.ASCIIFoldingFilterFactory" />
             <!--filter class="org.bireme.dia.filters.PrefixSuffixFilter" /-->
-            <filter class="solr.LengthFilterFactory" min="2" max="100" /> 
+            <filter class="solr.LengthFilterFactory" min="2" max="100" />
          </analyzer>
          <analyzer type="query">
             <tokenizer class="solr.KeywordTokenizerFactory" />
@@ -511,10 +511,6 @@
    </fields>
    <!-- field to use to determine and enforce document uniqueness. -->
    <uniqueKey>id</uniqueKey>
-   <!-- field for the QueryParser to use when an explicit fieldname is absent -->
-   <df>tw</df>
-   <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
-   <solrQueryParser q.op="AND" />
    <!-- general copyField -->
    <copyField source="ti" dest="tw" />
    <copyField source="ti_*" dest="tw" />
