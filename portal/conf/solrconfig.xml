@@ -445,8 +445,10 @@
        <str name="df">tw</str>
        <str name="q.op">AND</str>
        <str name="facet">true</str>
+       <str name="facet.limit">10</str>
+       <str name="facet.mincount">1</str>
+       <!--
        <str name="facet.field">carpha_type_document</str>
-       <!-- str name="f.carpha_type_document.facet.limit">40</str --><!-- muda qtde a exibir -->
        <str name="facet.field">carpha_country_focus</str>
        <str name="facet.field">carpha_author_location</str>
        <str name="facet.field">carpha_language</str>
@@ -629,12 +631,10 @@
        <str name="facet.field">type</str>
        <str name="facet.field">pais_afiliacao</str>
        <str name="facet.field">instituicao_pais_afiliacao</str>
-       <str name="facet.limit">10</str>
-       <str name="facet.mincount">1</str>
-       <!-- APS 05/2018 -->
        <str name="facet.field">ciap2</str>
        <str name="facet.field">teleconsultor</str>
        <str name="facet.field">categoria_da_evidencia</str>
+       -->
      </lst>
 
     </requestHandler>
@@ -787,6 +787,43 @@
     <arr name="components">
       <str>terms</str>
     </arr>
+  </requestHandler>
+
+  <updateRequestProcessorChain name="process-specific-clusters">
+    <!-- Clone each source field to its cluster counterpart -->
+    <processor class="solr.processor.CloneFieldUpdateProcessorFactory">
+        <str name="source">da</str>
+        <str name="dest">year_cluster</str>
+    </processor>
+    <processor class="solr.processor.CloneFieldUpdateProcessorFactory">
+        <str name="source">mj</str>
+        <str name="dest">mj_cluster</str>
+    </processor>
+
+    <!-- Extract only the year from the da cloned values -->
+    <processor class="solr.RegexReplaceProcessorFactory">
+        <str name="fieldName">year_cluster</str>
+        <str name="pattern">^([0-9]{4}).*</str>
+        <str name="replacement">$1</str>
+        <bool name="literalReplacement">false</bool>
+    </processor>
+
+    <!-- Extract only the ^d-prefixed codes from the cloned values -->
+    <processor class="solr.RegexReplaceProcessorFactory">
+        <str name="fieldName">mj_cluster</str>
+        <!-- Pattern: find the first ^d... and capture the whole code -->
+        <str name="pattern">^(\^d[0-9]+)(?:\^s[0-9]+)?$</str>
+        <!-- Replacement: keep just the capture -->
+        <str name="replacement">$1</str>
+        <bool name="literalReplacement">false</bool>
+    </processor>
+    <processor class="solr.RunUpdateProcessorFactory"/>
+  </updateRequestProcessorChain>
+
+  <requestHandler name="/update" class="solr.UpdateRequestHandler">
+    <lst name="defaults">
+        <str name="update.chain">process-specific-clusters</str>
+    </lst>
   </requestHandler>
 
   <!-- Legacy config for the admin interface -->

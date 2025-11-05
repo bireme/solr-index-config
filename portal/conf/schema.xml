@@ -92,7 +92,7 @@
             <filter class="solr.LowerCaseFilterFactory" />
          </analyzer>
       </fieldType>
-      <fieldType name="decs_code" class="solr.TextField" omitNorms="true">
+      <fieldType name="decs_code" class="solr.StrField" omitNorms="true">
          <analyzer type="index">
             <tokenizer class="solr.PatternTokenizerFactory" pattern="(\^d[0-9]+)" group="1" />
             <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
@@ -361,13 +361,13 @@
       <!-- cluster list -->
       <field name="tag" type="string" indexed="true" stored="false" multiValued="true" />
       <!--<field name="tag_sms" type="string" indexed="true" stored="false" multiValued="true" required="false" />-->
-      <field name="year_cluster" type="dateiso" indexed="true" stored="false" multiValued="true" />
-      <field name="mj_cluster" type="decs_code" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="year_cluster" type="string" indexed="true" stored="false" multiValued="true" docValues="true" />
+      <field name="mj_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" />
       <field name="limit" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="pt_cluster" type="decs_code" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="ta_cluster" type="string" indexed="true" stored="true" multiValued="true" required="false" />
-      <field name="ai_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="fulltext" type="string" indexed="true" stored="false" multiValued="false" required="false" />
+      <field name="pt_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" />
+      <field name="ta_cluster" type="string" indexed="true" stored="true" multiValued="true" required="false" docValues="true" />
+      <field name="ai_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" />
+      <field name="fulltext" type="string" indexed="true" stored="false" multiValued="false" required="false" docValues="true" />
       <field name="no_indexing" type="string" indexed="true" stored="false" multiValued="false" required="false" />
       <field name="_clinical_aspect" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="aspect" type="string" indexed="true" stored="false" multiValued="true" required="false" />
@@ -380,7 +380,6 @@
       <field name="jd" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="pais_assunto" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <!-- Exclusivos de GHL -->
-      <field name="mh_cluster" type="decs_code" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="pais_lingua_portuguesa" type="string" indexed="true" stored="false" multiValued="true" />
       <field name="regional_office" type="string" indexed="true" stored="true" multiValued="true" required="false" />
       <!-- Fontes de Informacao (FIOCruz) -->
@@ -541,9 +540,11 @@
    <!-- copia os dados de afiliacao para campo de cluster -->
    <copyField source="af" dest="af_cluster" />
    <!-- copia os codigos decs para o campo de cluster  -->
-   <copyField source="mj" dest="mj_cluster" />
    <copyField source="pt" dest="pt_cluster" />
+   <!--
+   <copyField source="mj" dest="mj_cluster" />
    <copyField source="da" dest="year_cluster" />
+   -->
    <copyField source="ta" dest="ta_cluster" />
    <copyField source="ai" dest="ai_cluster" />
    <!-- Eventos -->
@@ -562,6 +563,4 @@
    <copyField source="au" dest="spell" />
    <copyField source="ti" dest="spell_phrase" />
    <copyField source="au" dest="spell_phrase" />
-   <!-- Especificos de GHL -->
-   <copyField source="mj" dest="mh_cluster" />
 </schema>
