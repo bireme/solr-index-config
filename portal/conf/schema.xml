@@ -92,12 +92,6 @@
             <filter class="solr.LowerCaseFilterFactory" />
          </analyzer>
       </fieldType>
-      <fieldType name="decs_code" class="solr.StrField" omitNorms="true">
-         <analyzer type="index">
-            <tokenizer class="solr.PatternTokenizerFactory" pattern="(\^d[0-9]+)" group="1" />
-            <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
-         </analyzer>
-      </fieldType>
       <fieldType name="decs_qualifier" class="solr.TextField">
          <analyzer type="index">
 		    <!-- org.bireme.dia.analysis.DeCSQualifierAnalyzer -->
@@ -139,11 +133,6 @@
             <tokenizer class="solr.KeywordTokenizerFactory" />
             <filter class="solr.ASCIIFoldingFilterFactory" />
             <filter class="solr.LowerCaseFilterFactory" />
-         </analyzer>
-      </fieldType>
-      <fieldType name="dateiso" class="solr.TextField">
-         <analyzer type="index">
-            <tokenizer class="solr.PatternTokenizerFactory" pattern="(^[0-9]{4})" group="1" />
          </analyzer>
       </fieldType>
       <fieldType name="text" class="solr.TextField" positionIncrementGap="100">
