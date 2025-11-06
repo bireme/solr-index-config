@@ -238,22 +238,24 @@
       <field name="db" type="string" indexed="true" stored="true" multiValued="true" />
       <field name="bvs" type="string" indexed="true" stored="true" />
       <field name="instance" type="string" indexed="true" stored="true" multiValued="true" />
-      <field name="collection" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_fio" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_uruguai" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_perinatal" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_ses" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_sms" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_smu" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_puertorico" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_ecuador" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_oncologiauy" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_odontouy" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_enfermeriauy" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_iec" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_bvsnacuy" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_bvsms" type="string" indexed="true" stored="false" multiValued="true" />
-      <field name="collection_mtc" type="string" indexed="true" stored="false" multiValued="true" />
+      <!-- collection -->
+      <field name="collection" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_fio" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_uruguai" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_perinatal" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_ses" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_sms" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_smu" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_puertorico" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_ecuador" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_oncologiauy" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_odontouy" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_enfermeriauy" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_iec" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_bvsnacuy" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_bvsms" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+      <field name="collection_mtc" type="string" indexed="true" stored="false" multiValued="true" useDocValuesAsStored="false" />
+
       <field name="copyright" type="text" indexed="true" stored="true" multiValued="true" />
       <field name="declaration" type="text" indexed="true" stored="true" multiValued="true" />
       <field name="tombo" type="string" indexed="true" stored="true" multiValued="true" />
@@ -321,14 +323,14 @@
       <!-- cluster list -->
       <field name="tag" type="string" indexed="true" stored="false" multiValued="true" />
       <!--<field name="tag_sms" type="string" indexed="true" stored="false" multiValued="true" required="false" />-->
-      <field name="year_cluster" type="string" indexed="true" stored="false" multiValued="true" docValues="true" />
-      <field name="mj_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" />
+      <field name="year_cluster" type="string" indexed="true" stored="false" multiValued="true" docValues="true" useDocValuesAsStored="false" />
+      <field name="mj_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <field name="limit" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="pt_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" />
-      <field name="ta_cluster" type="string" indexed="true" stored="true" multiValued="true" required="false" docValues="true" />
-      <field name="ai_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" />
-      <field name="fulltext" type="string" indexed="true" stored="false" multiValued="false" required="false" docValues="true" />
-      <field name="no_indexing" type="string" indexed="true" stored="false" multiValued="false" required="false" />
+      <field name="pt_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
+      <field name="ta_cluster" type="string" indexed="true" stored="true" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
+      <field name="ai_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
+      <field name="fulltext" type="string" indexed="true" stored="false" multiValued="false" required="false" docValues="true" useDocValuesAsStored="false" />
+      <field name="no_indexing" type="string" indexed="true" stored="false" multiValued="false" required="false" useDocValuesAsStored="false" />
       <field name="_clinical_aspect" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="aspect" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="type_of_study" type="string" indexed="true" stored="false" multiValued="true" required="false" />
@@ -352,84 +354,84 @@
       <!-- CARPHA -->
       <field name="carpha_author_location" type="string" indexed="true" stored="true" multiValued="true" required="false" />
       <field name="carpha_country_focus" type="string" indexed="true" stored="true" multiValued="true" required="false" />
-      <field name="carpha_geral" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="carpha_geral" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
       <field name="carpha_language" type="string" indexed="true" stored="true" multiValued="true" required="false" />
       <field name="carpha_type_document" type="string" indexed="true" stored="true" multiValued="true" required="false" />
       <!-- APS -->
-      <field name="tag_aps" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="collection_aps" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_aps" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
+      <field name="collection_aps" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- Brasil -->
-      <field name="tag_brasil" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="tema_brasil" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_brasil" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
+      <field name="tema_brasil" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
       <!-- Saude Publica -->
-      <field name="tag_sp" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_sp" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
       <!-- Secretaria de Saude de Sao Paulo -->
-      <field name="tag_sessp" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_sessp" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
       <!-- Odontologia -->
-      <field name="tema_odontologia" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tema_odontologia" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
       <!-- HANSENIASE - - nao esta disponivel (iahx antiga ainda) -->
-      <field name="tag_hanseniase" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_hanseniase" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
       <!-- MTC -->
-      <field name="tag_mtc" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="tag_rhs" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="tag_mtc_tema1" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="tag_mtc_tema2" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="tag_mtc_tema3" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="tag_mtc_tema4" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="tag_mtc_elementos" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="tag_mtc_transversales" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_mtc" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
+      <field name="tag_rhs" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
+      <field name="tag_mtc_tema1" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
+      <field name="tag_mtc_tema2" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
+      <field name="tag_mtc_tema3" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
+      <field name="tag_mtc_tema4" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
+      <field name="tag_mtc_elementos" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
+      <field name="tag_mtc_transversales" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
       <field name="ec" type="string" indexed="true" stored="false" multiValued="false" required="false" />
       <!-- Economia -->
-      <field name="economia_tag" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="economia_tag" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
       <!-- CONASS-BIBSUS-2019 -->
-      <field name="tag_conass" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_conass" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
       <!-- temas prioritarios - 2019 -->
-      <field name="tag_temasprioritarios" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="tag_ods3" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="tag_assa2030" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <field name="evideasy_perguntas" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_temasprioritarios" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
+      <field name="tag_ods3" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
+      <field name="tag_assa2030" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
+      <field name="evideasy_perguntas" type="string" indexed="true" stored="false" multiValued="true" required="false" useDocValuesAsStored="false" />
       <!-- APS - 05/2018 -->
       <field name="ciap2" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="teleconsultor" type="string" indexed="true" stored="true" multiValued="true" required="false" />
-      <field name="categoria_da_evidencia" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="categoria_da_evidencia" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- ENFERMERIA - 10/2019 -->
-      <field name="collection_enfermeria" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_enfermeria" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- HANSENIASE - 01/2020 -->
-      <field name="collection_hanseniase" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_hanseniase" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- CONASS - 05/2019 -->
-      <field name="collection_conass" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_conass" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- END cluster list -->
-      <field name="revsys_epistem" type="string" indexed="true" stored="false" multiValued="false" required="false" />
+      <field name="revsys_epistem" type="string" indexed="true" stored="false" multiValued="false" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- controlecancer -->
-      <field name="tag_controlecancer" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_controlecancer" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- saude ambiental -->
-      <field name="tag_saudeambiental" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="tag_saudeambiental" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- PERU - 10/2020 -->
-      <field name="collection_peru" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_peru" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- Argentina - 10/2020 -->
-      <field name="collection_argentina" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_argentina" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- GIM - 02/2021 -->
-      <field name="collection_gim" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_gim" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- Economia - 02/2021 -->
-      <field name="collection_economia" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_economia" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- redetsa - 03/2021 -->
-      <field name="collection_redetsa" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_redetsa" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- nicaragua- 10/2021 -->
-      <field name="collection_nicaragua" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_nicaragua" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- honduras - 05/2022 -->
-      <field name="collection_honduras" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_honduras" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- cns-br - 10/2021 -->
-      <field name="collection_cns-br" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_cns-br" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- bolivia - 11/2021 -->
-      <field name="collection_bolivia" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_bolivia" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- mocambique - 03/2023 -->
-      <field name="collection_mocambique" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_mocambique" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- mocambique - 05/2023 -->
-      <field name="collection_controlecancer" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_controlecancer" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- costarica - 07/2023 -->
-      <field name="collection_costarica" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_costarica" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false"/>
       <!-- costarica - 05/2025 -->
-      <field name="collection_saude_indigena" type="string" indexed="true" stored="false" multiValued="true" required="false" />
+      <field name="collection_saude_indigena" type="string" indexed="true" stored="false" multiValued="true" required="false" docValues="true" useDocValuesAsStored="false" />
       <!-- ND - neglected_diseases -->
       <field name="tag_contexto" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="tag_tema_saude" type="string" indexed="true" stored="false" multiValued="true" required="false" />
