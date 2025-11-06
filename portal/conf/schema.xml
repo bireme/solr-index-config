@@ -152,13 +152,6 @@
 			<!-- filter class="solr.LengthFilterFactory" min="2" max="100" / -->
          </analyzer>
       </fieldType>
-      <!-- lowercases the entire field value, keeping it as a single token.  -->
-      <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100">
-         <analyzer>
-            <tokenizer class="solr.KeywordTokenizerFactory" />
-            <filter class="solr.LowerCaseFilterFactory" />
-         </analyzer>
-      </fieldType>
       <fieldType name="text_with_decs" class="solr.TextField">
 	     <analyzer type="index">
             <!-- org.bireme.dia.analysis.BVSStandardAnalyzer" -->
@@ -278,8 +271,8 @@
       <field name="mark_ab" type="text" indexed="false" stored="true" multiValued="true" />
       <field name="tl" type="string" indexed="true" stored="true" multiValued="true" />
       <field name="fo" type="text" indexed="false" stored="true" multiValued="true" />
-      <field name="la" type="lowercase" indexed="true" stored="true" multiValued="true" />
-      <field name="la_ab" type="lowercase" indexed="false" stored="true" multiValued="true" />
+      <field name="la" type="string" indexed="true" stored="true" multiValued="true" docValues="true" />
+      <field name="la_ab" type="string" indexed="false" stored="true" multiValued="true" />
       <field name="ur" type="string" indexed="false" stored="true" multiValued="true" />
       <field name="ur_AUDIO" type="string" indexed="false" stored="true" multiValued="true" />
       <field name="ur_MULTIMIDIA" type="string" indexed="false" stored="true" multiValued="true" />
