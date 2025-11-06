@@ -288,14 +288,14 @@
       <field name="type" type="string" indexed="true" stored="true" multiValued="true" />
       <field name="au" type="text" indexed="true" stored="true" multiValued="true" />
       <field name="email" type="text" indexed="false" stored="true" multiValued="true" />
-      <field name="ti" type="text" indexed="true" stored="true" multiValued="true" termVectors="true" />
-      <field name="ab" type="text" indexed="true" stored="true" multiValued="true" termVectors="true" />
-      <field name="super_ab" type="text" indexed="true" stored="true" multiValued="true" termVectors="true" />
-      <field name="super_ab_en" type="text" indexed="true" stored="true"   multiValued="true"   termVectors="true" />
-      <field name="super_ab_es" type="text" indexed="true" stored="true"   multiValued="true"   termVectors="true" />
-      <field name="super_ab_pt" type="text" indexed="true" stored="true"   multiValued="true"   termVectors="true" />
+      <field name="ti" type="text" indexed="true" stored="true" multiValued="true" />
+      <field name="ab" type="text" indexed="true" stored="true" multiValued="true" />
+      <field name="super_ab" type="text" indexed="true" stored="true" multiValued="true" />
+      <field name="super_ab_en" type="text" indexed="true" stored="true" multiValued="true" />
+      <field name="super_ab_es" type="text" indexed="true" stored="true" multiValued="true" />
+      <field name="super_ab_pt" type="text" indexed="true" stored="true" multiValued="true" />
       <field name="ab_plain" type="text" indexed="true" stored="true" multiValued="true" />
-      <field name="otherab" type="text" indexed="true" stored="true" multiValued="true" termVectors="true" />
+      <field name="otherab" type="text" indexed="true" stored="true" multiValued="true" />
       <field name="mark_ab" type="text" indexed="false" stored="true" multiValued="true" />
       <field name="tl" type="string" indexed="true" stored="true" multiValued="true" />
       <field name="fo" type="text" indexed="false" stored="true" multiValued="true" />
@@ -329,17 +329,16 @@
       <field name="th_ti" type="string" indexed="true" stored="true" multiValued="true" />
       <!-- affiliation country index -->
       <field name="afp" type="multilanguage" indexed="true" stored="false" multiValued="true" />
-      <field name="kw" type="text" indexed="true" stored="true" multiValued="true" termVectors="true" />
+      <field name="kw" type="text" indexed="true" stored="true" multiValued="true" />
       <field name="nm" type="text" indexed="true" stored="false" multiValued="true" />
       <field name="services" type="string" indexed="false" stored="true" multiValued="true" />
       <!-- decs fields -->
-      <!--<field name="mj" type="decs_authorized_category" indexed="true"  stored="false" multiValued="true"  termVectors="true" />-->
-      <field name="mj" type="decs_keyword" indexed="true" stored="false" multiValued="true" termVectors="true" />
-      <field name="mh" type="decs_keyword" indexed="true" stored="true" multiValued="true" termVectors="true" />
+      <field name="mj" type="decs_keyword" indexed="true" stored="false" multiValued="true" />
+      <field name="mh" type="decs_keyword" indexed="true" stored="true" multiValued="true" />
       <field name="pt" type="decs_keyword" indexed="true" stored="true" multiValued="true" />
       <field name="mh_words" type="decs" indexed="true" stored="false" multiValued="true" />
-      <field name="ct" type="decs" indexed="true" stored="true" multiValued="true" termVectors="true" />
-      <field name="sh" type="decs_qualifier" indexed="true" stored="true" multiValued="true" termVectors="true" />
+      <field name="ct" type="decs" indexed="true" stored="true" multiValued="true" />
+      <field name="sh" type="decs_qualifier" indexed="true" stored="true" multiValued="true" />
       <!-- sort -->
       <field name="order_sjr" type="tfloat" indexed="true" stored="true" multiValued="false" docValues="true" />
       <field name="weight" type="tfloat" indexed="true" stored="true" multiValued="false" docValues="true" />
