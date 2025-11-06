@@ -13,7 +13,6 @@
       <fieldType name="tlong" class="solr.LongPointField"  />
       <fieldType name="tdouble" class="solr.DoublePointField" />
       <fieldType name="date" class="solr.DatePointField" />
-      <!-- A Trie based date field for faster date range queries and date faceting. -->
       <fieldType name="tdate" class="solr.DatePointField" />
       <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
          <analyzer>
@@ -456,9 +455,10 @@
       <field name="traditional_medicines_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="si_dsei" type="string" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="si_controle_social" type="string" indexed="true" stored="false" multiValued="true" required="false" />
-      <!-- spellchecker -->
-      <!--<field name="spell" type="textSpell" indexed="true" stored="false" multiValued="true" />
-      <field name="spell_phrase" type="textSpellPhrase" indexed="true" stored="false" multiValued="true" />-->
+      <!-- spellchecker
+      <field name="spell" type="textSpell" indexed="true" stored="false" multiValued="true" />
+      <field name="spell_phrase" type="textSpellPhrase" indexed="true" stored="false" multiValued="true" />
+      -->
       <!-- catch all fields containing: -->
       <!--    other searchable text fields (implemented via copyField further on in this schema) -->
       <field name="tw" type="text_with_decs" indexed="true" stored="false" multiValued="true" />
@@ -509,10 +509,6 @@
    <copyField source="af" dest="af_cluster" />
    <!-- copia os codigos decs para o campo de cluster  -->
    <copyField source="pt" dest="pt_cluster" />
-   <!--
-   <copyField source="mj" dest="mj_cluster" />
-   <copyField source="da" dest="year_cluster" />
-   -->
    <copyField source="ta" dest="ta_cluster" />
    <copyField source="ai" dest="ai_cluster" />
    <!-- Eventos -->
@@ -526,9 +522,10 @@
    <!-- copia sinomimos dos termos decs para tw -->
    <copyField source="decs_syn_*" dest="tw" />
    <copyField source="pais_afiliacao" dest="afp" />
-   <!-- spellchecker -->
+   <!-- spellchecker
    <copyField source="ti" dest="spell" />
    <copyField source="au" dest="spell" />
    <copyField source="ti" dest="spell_phrase" />
    <copyField source="au" dest="spell_phrase" />
+   -->
 </schema>
