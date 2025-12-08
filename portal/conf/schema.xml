@@ -173,12 +173,11 @@
 		           fixPrefixSuffix="false" />
 	    <filter class="solr.WordDelimiterGraphFilterFactory"
                            generateWordParts="1"
-                           generateNumberParts="0"
-                           stemEnglishPossessive="1"
-                           catenateAll="1"
-		           preserveOriginal="1"
-                           adjustOffsets="1"
-		           types="conf/WordDelimiterGraphFilterFactory.cfg"  />
+                           generateNumberParts="1"
+                           catenateWords="1"
+                           catenateNumbers="1"
+                           catenateAll="0"
+                           preserveOriginal="1" />
 	    <filter class="solr.ASCIIFoldingFilterFactory" />
             <!--filter class="org.bireme.dia.filters.PrefixSuffixFilter" /-->
             <filter class="solr.LengthFilterFactory" min="2" max="100" />
