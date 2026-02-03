@@ -142,7 +142,7 @@
             <tokenizer class="solr.WhitespaceTokenizerFactory" />
             <filter class="solr.ASCIIFoldingFilterFactory" />
             <filter class="solr.LowerCaseFilterFactory" />
-            <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" preserveOriginal="1" />
+            <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateAll="1" preserveOriginal="1" />
 			<!-- filter class="org.bireme.dia.filters.PrefixSuffixFilterFactory" / -->
 			<!-- filter class="solr.LengthFilterFactory" min="2" max="100" / -->
          </analyzer>
@@ -150,7 +150,7 @@
             <tokenizer class="solr.WhitespaceTokenizerFactory" />
             <filter class="solr.ASCIIFoldingFilterFactory" />
             <filter class="solr.LowerCaseFilterFactory" />
-            <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" preserveOriginal="1" />
+            <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateAll="1" preserveOriginal="1" />
 			<!-- filter class="org.bireme.dia.filters.PrefixSuffixFilterFactory" / -->
 			<!-- filter class="solr.LengthFilterFactory" min="2" max="100" / -->
          </analyzer>
@@ -212,7 +212,7 @@
          <analyzer>
             <tokenizer class="solr.WhitespaceTokenizerFactory" />
             <filter class="solr.ASCIIFoldingFilterFactory" />
-            <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" />
+            <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateAll="1" />
             <filter class="solr.LowerCaseFilterFactory" />
          </analyzer>
       </fieldType>
