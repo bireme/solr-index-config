@@ -15,7 +15,7 @@
       <fieldType name="tdouble" class="solr.DoublePointField" />
       <fieldType name="date" class="solr.DatePointField" />
       <fieldType name="tdate" class="solr.DatePointField" />
-      <fieldType name="knn_vector" class="solr.DenseVectorField" vectorDimension="768" similarityFunction="cosine"/>
+      <fieldType name="knn_vector" class="solr.DenseVectorField" vectorDimension="4096" similarityFunction="cosine"/>
 
       <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
          <analyzer>
