@@ -101,12 +101,13 @@
             <filter class="solr.ASCIIFoldingFilterFactory" />
             <filter class="solr.LowerCaseFilterFactory" />
             <filter class="org.bireme.dia.filters.SynonymFilterFactory"
-                           getDescriptor="true"
+                           getDescriptor="false"
                            getQualifiers="true"
-                           getJoinDescrQual="true"
-                           getSynonyms="true"
-                           acceptOnlyPrecoded="true"
-                           toLowerCase="true"  />
+                           getJoinDescrQual="false"
+                           getSynonyms="false"
+                           acceptOnlyPrecoded="false"
+                           toLowerCase="true"
+                           fixPrefixSuffix="false"  />
             <filter class="solr.ASCIIFoldingFilterFactory" />
             <!--filter class="org.bireme.dia.filters.PrefixSuffixFilter" /-->
             <filter class="solr.LengthFilterFactory" min="1" max="100" />
