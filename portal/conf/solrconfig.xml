@@ -116,7 +116,30 @@
          IndexWriter to write its info stream to solr's log. By default,
          this is enabled here, and controlled through log4j.properties.
       -->
-     <infoStream>true</infoStream>
+    <infoStream>false</infoStream>
+
+    <ramBufferSizeMB>1024</ramBufferSizeMB>
+
+    <useCompoundFile>false</useCompoundFile>
+
+    <!-- Only segmentsPerTier differs from the Lucene defaults (10); raising it to 20
+         lets more segments accumulate before merging, which lowers write amplification
+         during bulk indexing at a small cost to search. maxMergeAtOnce (10),
+         targetSearchConcurrency (1) and maxMergedSegmentMB (5120) were the defaults
+         and have been removed. Note: forceMerge/optimize ignores this policy entirely. -->
+    <mergePolicyFactory class="org.apache.solr.index.TieredMergePolicyFactory">
+        <int name="segmentsPerTier">20</int>
+    </mergePolicyFactory>
+
+    <!-- Kept deliberately: the index lives on non-rotational storage (VG_BASES, ROTA=0).
+         Lucene's defaults here are maxThreadCount=4, maxMergeCount=9 and auto IO throttling
+         ENABLED, which caps merge I/O to ~10-20 MB/s and hurts bulk indexing on SSD. -->
+    <mergeScheduler class="org.apache.lucene.index.ConcurrentMergeScheduler">
+        <int name="maxMergeCount">11</int>
+        <int name="maxThreadCount">6</int>
+        <bool name="ioThrottle">false</bool>
+    </mergeScheduler>
+
   </indexConfig>
 
 
@@ -153,11 +176,11 @@
                 synchronizing access to version buckets during high-volume
                 indexing, this requires 8 bytes (long) * numVersionBuckets
                 of heap space per Solr core.
-    -->
     <updateLog>
       <str name="dir">${solr.ulog.dir:}</str>
       <int name="numVersionBuckets">${solr.ulog.numVersionBuckets:65536}</int>
     </updateLog>
+    -->
 
     <!-- AutoCommit
 
@@ -181,7 +204,7 @@
          have some sort of hard autoCommit to limit the log size.
       -->
      <autoCommit>
-       <maxTime>${solr.autoCommit.maxTime:15000}</maxTime>
+       <maxDocs>2000000</maxDocs>
        <openSearcher>false</openSearcher>
      </autoCommit>
 
@@ -191,7 +214,7 @@
          faster and more near-realtime friendly than a hard commit.
       -->
      <autoSoftCommit>
-       <maxTime>${solr.autoSoftCommit.maxTime:-1}</maxTime>
+       <maxTime>-1</maxTime>
      </autoSoftCommit>
 
   </updateHandler>
@@ -686,6 +709,13 @@
     </lst>
   </initParams>
 
+  <initParams path="/update,/update/**">
+    <lst name="invariants">
+        <bool name="waitSearcher">false</bool>
+        <bool name="overwrite">false</bool>
+    </lst>
+  </initParams>
+
   <!-- Field Analysis Request Handler
 
        RequestHandler that provides much the same functionality as
@@ -832,4 +862,3 @@
   </admin>
 
 </config>
-

@@ -70,7 +70,7 @@
             <filter class="solr.LowerCaseFilterFactory" />
          </analyzer>
       </fieldType>
-      <fieldType name="decs_keyword" class="solr.TextField">
+      <fieldType name="decs_keyword" class="solr.TextField" omitPositions="true">
          <analyzer type="index">
 		    <!-- org.bireme.dia.analysis.DeCSKeywordAnalyzer -->
             <tokenizer class="solr.KeywordTokenizerFactory" />
@@ -94,7 +94,7 @@
             <filter class="solr.LowerCaseFilterFactory" />
          </analyzer>
       </fieldType>
-      <fieldType name="decs_qualifier" class="solr.TextField">
+      <fieldType name="decs_qualifier" class="solr.TextField" omitPositions="true">
          <analyzer type="index">
 		    <!-- org.bireme.dia.analysis.DeCSQualifierAnalyzer -->
             <tokenizer class="solr.KeywordTokenizerFactory" />
@@ -190,7 +190,7 @@
             <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateAll="1" preserveOriginal="1" />
          </analyzer>
       </fieldType>
-      <fieldType name="string_normalized" class="solr.TextField">
+      <fieldType name="string_normalized" class="solr.TextField" omitPositions="true">
          <analyzer>
             <tokenizer class="solr.KeywordTokenizerFactory" />
             <filter class="solr.ASCIIFoldingFilterFactory" />
@@ -207,7 +207,7 @@
          </analyzer>
       </fieldType>
       <!-- spellchecker -->
-      <fieldType name="textSpell" class="solr.TextField" positionIncrementGap="100">
+      <fieldType name="textSpell" class="solr.TextField" positionIncrementGap="100" omitPositions="true">
          <analyzer>
             <tokenizer class="solr.WhitespaceTokenizerFactory" />
             <filter class="solr.ASCIIFoldingFilterFactory" />
@@ -216,7 +216,7 @@
          </analyzer>
       </fieldType>
       <!-- spellchecker useful for names & titles -->
-      <fieldType name="textSpellPhrase" class="solr.TextField" positionIncrementGap="100" stored="false" multiValued="true">
+      <fieldType name="textSpellPhrase" class="solr.TextField" positionIncrementGap="100" stored="false" multiValued="true" omitPositions="true">
          <analyzer>
             <tokenizer class="solr.KeywordTokenizerFactory" />
             <filter class="solr.LowerCaseFilterFactory" />
