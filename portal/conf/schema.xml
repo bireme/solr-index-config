@@ -265,10 +265,12 @@
       <field name="email" type="text" indexed="false" stored="true" multiValued="true" />
       <field name="ti" type="text" indexed="true" stored="true" multiValued="true" />
       <field name="ab" type="text" indexed="true" stored="true" multiValued="true" />
-      <field name="super_ab" type="text" indexed="true" stored="true" multiValued="true" />
-      <field name="super_ab_en" type="text" indexed="true" stored="true" multiValued="true" />
-      <field name="super_ab_es" type="text" indexed="true" stored="true" multiValued="true" />
-      <field name="super_ab_pt" type="text" indexed="true" stored="true" multiValued="true" />
+
+      <field name="super_ab_ia_en"              type="text"                     indexed="true"   stored="true"   multiValued="true"   termVectors="true" />
+      <field name="super_ab_ia_es"              type="text"                     indexed="true"   stored="true"   multiValued="true"   termVectors="true" />
+      <field name="super_ab_ia_fr"              type="text"                     indexed="true"   stored="true"   multiValued="true"   termVectors="true" />
+      <field name="super_ab_ia_pt"              type="text"                     indexed="true"   stored="true"   multiValued="true"   termVectors="true" />
+	   
       <field name="ab_plain" type="text" indexed="true" stored="true" multiValued="true" />
       <field name="otherab" type="text" indexed="true" stored="true" multiValued="true" />
       <field name="mark_ab" type="text" indexed="false" stored="true" multiValued="true" />
@@ -308,12 +310,15 @@
       <field name="nm" type="text" indexed="true" stored="false" multiValued="true" />
       <field name="services" type="string" indexed="false" stored="true" multiValued="true" />
       <!-- decs fields -->
-      <field name="mj" type="decs_keyword" indexed="true" stored="false" multiValued="true" />
-      <field name="mh" type="decs_keyword" indexed="true" stored="true" multiValued="true" />
-      <field name="pt" type="decs_keyword" indexed="true" stored="true" multiValued="true" />
-      <field name="mh_words" type="decs" indexed="true" stored="false" multiValued="true" />
-      <field name="ct" type="decs" indexed="true" stored="true" multiValued="true" />
-      <field name="sh" type="decs_qualifier" indexed="true" stored="true" multiValued="true" />
+      <field name="mj"                          type="decs_keyword"             indexed="true"   stored="false"  multiValued="true"   termVectors="true" />
+      <field name="mh"                          type="decs_keyword"             indexed="true"   stored="true"   multiValued="true"   termVectors="true" />
+      <field name="mh_ia"                       type="decs_keyword"             indexed="true"   stored="true"   multiValued="true"   termVectors="true" />
+      <field name="pt"                          type="decs_keyword"             indexed="true"   stored="true"   multiValued="true" />
+      <field name="mh_words"                    type="decs"                     indexed="true"   stored="false"  multiValued="true" />
+      <field name="ct"                          type="decs"                     indexed="true"   stored="true"   multiValued="true"   termVectors="true" />
+      <field name="sh"                          type="decs_qualifier"           indexed="true"   stored="true"   multiValued="true"   termVectors="true" />
+
+	   
       <!-- sort -->
       <field name="order_sjr" type="tfloat" indexed="true" stored="true" multiValued="false" />
       <field name="weight" type="tfloat" indexed="true" stored="true" multiValued="false" />
@@ -421,6 +426,7 @@
       <field name="collection_nicaragua" type="string_no_stored" indexed="true" stored="false" multiValued="true" required="false" />
       <!-- honduras - 05/2022 -->
       <field name="collection_honduras" type="string_no_stored" indexed="true" stored="false" multiValued="true" required="false" />
+	  <field name="collection_guatemala" type="string_no_stored" indexed="true" stored="false" multiValued="true" required="false" />
       <!-- cns-br - 10/2021 -->
       <field name="collection_cns-br" type="string_no_stored" indexed="true" stored="false" multiValued="true" required="false" />
       <!-- bolivia - 11/2021 -->
@@ -445,12 +451,31 @@
       <field name="pbm" type="string_no_stored" indexed="true" stored="false" multiValued="false" />
       <!-- tag_dimensions (ver grafia) - comecou com a TMGL -->
       <field name="tag_dimentions" type="string_no_stored" indexed="true" stored="false" multiValued="true" required="false" />
+	   
       <!-- who_regions - comecou com a TMGL -->
       <field name="who_regions" type="string_no_stored" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="traditional_medicines" type="string_no_stored" indexed="true" stored="false" multiValued="false" required="false" />
       <field name="traditional_medicines_cluster" type="string_no_stored" indexed="true" stored="false" multiValued="true" required="false" />
+	   
       <field name="si_dsei" type="string_no_stored" indexed="true" stored="false" multiValued="true" required="false" />
       <field name="si_controle_social" type="string_no_stored" indexed="true" stored="false" multiValued="true" required="false" />
+
+      <!-- collection_memorial_covid - 2026 -->
+      <field name="collection_memorial_covid" type="string_no_stored"            indexed="true"   stored="false"  multiValued="true"   required="false" />
+      <field name="colecao"                   type="string_no_stored"            indexed="true"   stored="false"  multiValued="true"   required="false" />
+
+      <!-- susdigital -->
+      <field name="collection_susdigital"    type="string_no_stored"            indexed="true"   stored="false"  multiValued="true"   required="false" />
+      <field name="thematic_area_susdigital" type="string_no_stored"            indexed="true"   stored="false"  multiValued="true"   required="false" />
+      <!-- tema_susdigital_programas e tema_susdigital_publico_alvo - SUS-Digital -->
+      <field name="tema_susdigital_programas"        type="string_no_stored"     indexed="true"   stored="false"  multiValued="true"   required="false" />
+      <field name="tema_susdigital_publico_alvo"     type="string_no_stored"     indexed="true"   stored="false"  multiValued="true"   required="false" />
+
+	  <!-- hearts -->
+      <field name="collection_hearts"             type="string_no_stored"    indexed="true"   stored="false"  multiValued="true"   required="false" />
+      <field name="tag_hearts"                    type="string_no_stored"    indexed="true"   stored="false"  multiValued="true"   required="false" />
+      <field name="tag_hearts_produccion"         type="string_no_stored"    indexed="true"   stored="false"  multiValued="true"   required="false" />
+
       <!-- spellchecker
       <field name="spell" type="textSpell" indexed="true" stored="false" multiValued="true" />
       <field name="spell_phrase" type="textSpellPhrase" indexed="true" stored="false" multiValued="true" />
