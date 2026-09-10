@@ -712,7 +712,7 @@
   <initParams path="/update,/update/**">
     <lst name="invariants">
         <bool name="waitSearcher">false</bool>
-        <bool name="overwrite">false</bool>
+        <bool name="overwrite">true</bool>
     </lst>
   </initParams>
 
