@@ -1,75 +1,24 @@
 <?xml version="1.0"?>
-<schema name="bvs" version="1.5">
+<schema name="bvs" version="1.6">
   <types>
-    <fieldType name="string"   class="solr.StrField"                                                       sortMissingLast="true" omitNorms="true" />
-    <fieldType name="boolean"  class="solr.BoolField"                                                      sortMissingLast="true" omitNorms="true" />
-    <fieldType name="int"      class="solr.TrieIntField"     precisionStep="0"   positionIncrementGap="0" />
-    <fieldType name="float"    class="solr.TrieFloatField"   precisionStep="0"   positionIncrementGap="0" />
-    <fieldType name="long"     class="solr.TrieLongField"    precisionStep="0"   positionIncrementGap="0" />
-    <fieldType name="double"   class="solr.TrieDoubleField"  precisionStep="0"   positionIncrementGap="0" />
-    <fieldType name="tint"     class="solr.TrieIntField"     precisionStep="8"   positionIncrementGap="0" />
-    <fieldType name="tfloat"   class="solr.TrieFloatField"   precisionStep="8"   positionIncrementGap="0" />
-    <fieldType name="tlong"    class="solr.TrieLongField"    precisionStep="8"   positionIncrementGap="0" />
-    <fieldType name="tdouble"  class="solr.TrieDoubleField"  precisionStep="8"   positionIncrementGap="0" />
-    <fieldType name="date"     class="solr.TrieDateField"    precisionStep="0"   positionIncrementGap="0" />
-    <!-- A Trie based date field for faster date range queries and date faceting. -->
-    <fieldType name="tdate"    class="solr.TrieDateField"    precisionStep="6"   positionIncrementGap="0" />
+    <fieldType name="string"            class="solr.StrField"          sortMissingLast="true" omitNorms="true" docValues="true" />
+    <fieldType name="boolean"           class="solr.BoolField"         sortMissingLast="true" omitNorms="true" />
+    <!-- Point fields replace the Trie fields removed in Solr 9. docValues are required for faceting and sorting. -->
+    <fieldType name="int"               class="solr.IntPointField"     docValues="true" />
+    <fieldType name="float"             class="solr.FloatPointField"   docValues="true" />
+    <fieldType name="long"              class="solr.LongPointField"    docValues="true" />
+    <fieldType name="plong"             class="solr.LongPointField"    docValues="true" />
+    <fieldType name="double"            class="solr.DoublePointField"  docValues="true" />
+    <fieldType name="tint"              class="solr.IntPointField"     docValues="true" />
+    <fieldType name="tfloat"            class="solr.FloatPointField"   docValues="true" />
+    <fieldType name="tlong"             class="solr.LongPointField"    docValues="true" />
+    <fieldType name="tdouble"           class="solr.DoublePointField"  docValues="true" />
+    <fieldType name="date"              class="solr.DatePointField"    docValues="true" />
+    <fieldType name="tdate"             class="solr.DatePointField"    docValues="true" />
 
     <fieldType name="text_ws"                  class="solr.TextField"                            positionIncrementGap="100">
       <analyzer>
         <tokenizer class="solr.WhitespaceTokenizerFactory" />
-      </analyzer>
-    </fieldType>
-
-    <fieldType name="decs"                     class="solr.TextField" omitNorms="false">
-      <analyzer type="index" class="org.bireme.dia.analysis.DeCSAnalyzer" />
-      <analyzer type="query">
-        <tokenizer class="solr.WhitespaceTokenizerFactory" />
-           <filter class="solr.ASCIIFoldingFilterFactory" />
-           <filter class="solr.LowerCaseFilterFactory" />
-      </analyzer>
-    </fieldType>
-
-    <fieldType name="decs_simple"              class="solr.TextField">
-      <analyzer type="index" class="org.bireme.dia.analysis.DeCSSimpleAnalyzer" />
-      <analyzer type="query">
-        <tokenizer class="solr.KeywordTokenizerFactory" />
-           <filter class="solr.ASCIIFoldingFilterFactory" />
-           <filter class="solr.LowerCaseFilterFactory" />
-      </analyzer>
-    </fieldType>
-
-    <fieldType name="decs_keyword"             class="solr.TextField">
-      <analyzer type="index" class="org.bireme.dia.analysis.DeCSKeywordAnalyzer" />
-      <analyzer type="query">
-        <tokenizer class="solr.KeywordTokenizerFactory" />
-           <filter class="solr.ASCIIFoldingFilterFactory" />
-           <filter class="solr.LowerCaseFilterFactory" />
-      </analyzer>
-    </fieldType>
-
-    <fieldType name="decs_code"                class="solr.TextField" omitNorms="true">
-      <analyzer type="index">
-        <tokenizer class="solr.PatternTokenizerFactory" pattern="(\^d[0-9]+)" group="1" />
-           <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
-      </analyzer>
-    </fieldType>
-
-    <fieldType name="decs_qualifier"           class="solr.TextField">
-      <analyzer type="index" class="org.bireme.dia.analysis.DeCSQualifierAnalyzer" />
-      <analyzer type="query">
-        <tokenizer class="solr.KeywordTokenizerFactory" />
-        <filter class="solr.ASCIIFoldingFilterFactory" />
-        <filter class="solr.LowerCaseFilterFactory" />
-      </analyzer>
-    </fieldType>
-
-    <fieldType name="decs_authorized_category" class="solr.TextField">
-      <analyzer type="index" class="org.bireme.dia.analysis.DeCSAuthorizedTermAndCategoryAnalyzer" />
-      <analyzer type="query">
-        <tokenizer class="solr.KeywordTokenizerFactory" />
-           <filter class="solr.ASCIIFoldingFilterFactory" />
-           <filter class="solr.LowerCaseFilterFactory" />
       </analyzer>
     </fieldType>
 
@@ -84,13 +33,14 @@
         <tokenizer class="solr.WhitespaceTokenizerFactory" />
            <filter class="solr.ASCIIFoldingFilterFactory" />
            <filter class="solr.LowerCaseFilterFactory" />
-           <filter class="solr.WordDelimiterFilterFactory"         generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" preserveOriginal="1" />
+           <filter class="solr.WordDelimiterGraphFilterFactory"    generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" preserveOriginal="1" />
+           <filter class="solr.FlattenGraphFilterFactory" />
       </analyzer>
       <analyzer type="query">
         <tokenizer class="solr.WhitespaceTokenizerFactory" />
            <filter class="solr.ASCIIFoldingFilterFactory" />
            <filter class="solr.LowerCaseFilterFactory" />
-           <filter class="solr.WordDelimiterFilterFactory"         generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" preserveOriginal="1" />
+           <filter class="solr.WordDelimiterGraphFilterFactory"    generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" preserveOriginal="1" />
       </analyzer>
     </fieldType>
 
@@ -100,15 +50,6 @@
         <tokenizer class="solr.KeywordTokenizerFactory" />
         <filter class="solr.ASCIIFoldingFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory" />
-      </analyzer>
-    </fieldType>
-
-    <fieldType name="text_with_decs"           class="solr.TextField">
-      <analyzer type="index" class="org.bireme.dia.analysis.BVSStandardAnalyzer" />
-      <analyzer type="query">
-        <tokenizer class="solr.WhitespaceTokenizerFactory" />
-           <filter class="solr.ASCIIFoldingFilterFactory" />
-           <filter class="solr.LowerCaseFilterFactory" />
       </analyzer>
     </fieldType>
 
@@ -131,11 +72,11 @@
     </fieldType>
 
     <!-- spellchecker -->
-    <fieldType name="textSpell"                class="solr.TextField" positionIncrementGap="100">
+    <fieldType name="textSpell"                class="solr.TextField" positionIncrementGap="100" omitPositions="true">
       <analyzer>
         <tokenizer class="solr.WhitespaceTokenizerFactory" />
            <filter class="solr.ASCIIFoldingFilterFactory" />
-           <filter class="solr.WordDelimiterFilterFactory"         generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" />
+           <filter class="solr.WordDelimiterGraphFilterFactory"    generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" />
            <filter class="solr.LowerCaseFilterFactory" />
       </analyzer>
     </fieldType>
@@ -148,12 +89,12 @@
       </analyzer>
     </fieldType>
 
-    <fieldType name="ignored"                  class="solr.StrField" stored="false" indexed="false" />
+    <fieldType name="ignored"                  class="solr.StrField" stored="false" indexed="false" useDocValuesAsStored="false" />
   </types>
 
   <!-- Definicoes de campos indexaveis armazenaveis e etc -->
   <fields>
-    <field name="_version_"                   type="long"                     indexed="true"   stored="true"/>
+    <field name="_version_"                   type="plong"                    indexed="true"   stored="true"/>
 
     <!-- common fields -->
     <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
@@ -179,10 +120,10 @@
     <field name="related_links" type="text" indexed="false" stored="true" multiValued="false"/>
     <field name="products_information" type="text" indexed="false" stored="true" multiValued="false"/>
 
-    <field name="start_date" type="string" indexed="false" stored="true" multiValued="false"/>
-    <field name="end_date" type="string" indexed="false" stored="true" multiValued="false"/>
-    <field name="partial_date" type="string" indexed="false" stored="true" multiValued="false"/>
-    <field name="other_date" type="string" indexed="false" stored="true" multiValued="false"/>
+    <field name="start_date" type="string" indexed="false" stored="true" docValues="false" multiValued="false"/>
+    <field name="end_date" type="string" indexed="false" stored="true" docValues="false" multiValued="false"/>
+    <field name="partial_date" type="string" indexed="false" stored="true" docValues="false" multiValued="false"/>
+    <field name="other_date" type="string" indexed="false" stored="true" docValues="false" multiValued="false"/>
 
     <field name="keywords" type="text" indexed="true" stored="true" multiValued="true"/>
     <field name="thematic_area" type="string" indexed="true" stored="true" multiValued="true"/>
@@ -206,17 +147,13 @@
  <!-- field to use to determine and enforce document uniqueness. -->
  <uniqueKey>id</uniqueKey>
 
- <!-- field for the QueryParser to use when an explicit fieldname is absent -->
- <defaultSearchField>tw</defaultSearchField>
-
- <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
- <solrQueryParser defaultOperator="AND"/>
+ <!-- Default search field (tw) and default operator (AND) are set in solrconfig.xml
+      (df / q.op): defaultSearchField and solrQueryParser were removed from the schema in Solr 7. -->
 
  <copyField source="title" dest="tw"/>
  <copyField source="notes" dest="tw"/>
  <copyField source="description" dest="tw"/>
  <copyField source="fulltext" dest="tw"/>
  <copyField source="issue" dest="tw"/>
-
 
 </schema>
