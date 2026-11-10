@@ -1,0 +1,16 @@
+[
+ {"id": "1", "title": "Experiência em saúde pública", "notes": "notaunica",
+  "description": "descunica covid-19 projeto", "fulltext": "fulltextunica", "issue": "issueunica",
+  "status": "concluido", "other_status": "outro", "objectives": "objetivounico", "resources": "recursos",
+  "context": "contexto", "main_results": "resultados", "challenges_information": "desafios",
+  "lessons_learned": "@BIG@", "other_results": "outros", "other_medias": "m", "other_docs": "d",
+  "other_videos": "v", "related_links": "http://x", "products_information": "p",
+  "start_date": "2020-01-01", "end_date": "2021-01-01", "partial_date": "2020", "other_date": "@BIG@",
+  "keywords": ["vacina", "atenção primária"], "thematic_area": ["saude", "educacao"],
+  "population_group": ["criancas", "idosos"], "region": "sudeste", "city": "São Paulo", "country": "Brasil",
+  "other_population_group": "outros", "collection": ["col1", "col2"], "descriptors": ["Vacinação", "Saúde"],
+  "campo_extra": "valorextra"},
+ {"id": "2", "title": "Relato educação", "description": "projeto escolar", "status": "em_andamento",
+  "thematic_area": ["educacao"], "population_group": ["criancas"], "country": "Argentina",
+  "collection": ["col1"]}
+]

@@ -1,0 +1,8 @@
+[
+ {"id": "m1", "uri": "/api/v1/search", "timestamp": "2026-01-15T10:00:00Z", "client_ip": "10.0.0.1",
+  "route_name": "search", "consumer_name": "portal", "request_method": "GET", "request_time": "0.120",
+  "response_status": "200", "query_string": "q=malaria", "extra_field": "valor dinamico"},
+ {"id": "m2", "uri": "/api/v1/document", "timestamp": "2026-01-16T11:30:00Z", "client_ip": "10.0.0.2",
+  "route_name": "document", "consumer_name": "app", "request_method": "POST", "request_time": "0.300",
+  "response_status": "500", "query_string": "id=1"}
+]

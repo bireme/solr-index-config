@@ -1,0 +1,8 @@
+[
+ {"id": "lil-1", "db": ["LILACS"], "type": ["article"], "ti": ["Malária em crianças na Amazônia"],
+  "ab": ["Estudo sobre plasmodium vivax"], "au": ["Silva, J."], "la": ["pt"], "da": "202001",
+  "ta": ["Rev. Saúde Pública"], "mh": ["^d8569"], "fo": ["Rev Saude Publica; 54: 1-10, 2020"]},
+ {"id": "mdl-2", "db": ["MEDLINE"], "type": ["article"], "ti": ["Face masks and respiratory infection"],
+  "ab": ["A randomized trial"], "au": ["Smith, A."], "la": ["en"], "da": "202105",
+  "mh": ["^d8569^s22016"]}
+]
