@@ -32,7 +32,7 @@
        that you fully re-index after changing this setting as it can
        affect both how text is indexed and queried.
   -->
-  <luceneMatchVersion>5.4.1</luceneMatchVersion>
+  <luceneMatchVersion>9.12</luceneMatchVersion>
 
   <!--lib dir="../lib" /-->
 
@@ -120,22 +120,8 @@
   </indexConfig>
 
 
-  <!-- JMX
-
-       This example enables JMX if and only if an existing MBeanServer
-       is found, use this if you want to configure JMX through JVM
-       parameters. Remove this to disable exposing Solr configuration
-       and statistics to JMX.
-
-       For more details see http://wiki.apache.org/solr/SolrJmx
-    -->
-  <jmx />
-  <!-- If you want to connect to a particular server, specify the
-       agentId
-    -->
-  <!-- <jmx agentId="myAgent" /> -->
-  <!-- If you want to start a new MBeanServer, specify the serviceUrl -->
-  <!-- <jmx serviceUrl="service:jmx:rmi:///jndi/rmi://localhost:9999/solr"/>
+  <!-- JMX: the <jmx/> element is no longer supported in Solr 9.
+       Metrics/JMX reporting is configured in solr.xml (<metrics><reporter .../>).
     -->
 
   <!-- The default high-performance update handler -->
@@ -147,16 +133,9 @@
          is recommended (see below).
          "dir" - the target directory for transaction logs, defaults to the
                 solr data directory.
-         "numVersionBuckets" - sets the number of buckets used to keep
-                track of max version values when checking for re-ordered
-                updates; increase this value to reduce the cost of
-                synchronizing access to version buckets during high-volume
-                indexing, this requires 8 bytes (long) * numVersionBuckets
-                of heap space per Solr core.
     -->
     <updateLog>
       <str name="dir">${solr.ulog.dir:}</str>
-      <int name="numVersionBuckets">${solr.ulog.numVersionBuckets:65536}</int>
     </updateLog>
 
     <!-- AutoCommit
@@ -221,14 +200,9 @@
 
     <!-- Solr Internal Query Caches
 
-         There are two implementations of cache available for Solr,
-         LRUCache, based on a synchronized LinkedHashMap, and
-         FastLRUCache, based on a ConcurrentHashMap.
-
-         FastLRUCache has faster gets and slower puts in single
-         threaded operation and thus is generally faster than LRUCache
-         when the hit ratio of the cache is high (> 75%), and may be
-         faster under other scenarios on multi-cpu systems.
+         Solr 9 has a single cache implementation, solr.CaffeineCache,
+         which is the default when no "class" attribute is given
+         (LRUCache and FastLRUCache were removed).
     -->
 
     <!-- Filter Cache
@@ -237,24 +211,20 @@
          unordered sets of *all* documents that match a query.  When a
          new searcher is opened, its caches may be prepopulated or
          "autowarmed" using data from caches in the old searcher.
-         autowarmCount is the number of items to prepopulate.  For
-         LRUCache, the autowarmed items will be the most recently
-         accessed items.
+         autowarmCount is the number of items to prepopulate.
 
          Parameters:
-           class - the SolrCache implementation LRUCache or
-               (LRUCache or FastLRUCache)
            size - the maximum number of entries in the cache
            initialSize - the initial capacity (number of entries) of
                the cache.  (see java.util.HashMap)
            autowarmCount - the number of entries to prepopulate from
                and old cache.
       - - >
-    <filterCache class="solr.FastLRUCache"
+    <filterCache
                  size="512"
                  initialSize="512"
                  autowarmCount="0"/>	-->
-    <filterCache class="solr.FastLRUCache"
+    <filterCache
                  size="16384"
                  initialSize="4096"
                  autowarmCount="0"/>
@@ -263,15 +233,15 @@
 
         Caches results of searches - ordered lists of document ids
         (DocList) based on a query, a sort, and the range of documents requested.
-        Additional supported parameter by LRUCache:
+        Additional supported parameter:
            maxRamMB - the maximum amount of RAM (in MB) that this cache is allowed
                       to occupy
      - - >
-    <queryResultCache class="solr.LRUCache"
+    <queryResultCache
                      size="512"
                      initialSize="512"
                      autowarmCount="0"/> -->
-    <queryResultCache class="solr.LRUCache"
+    <queryResultCache
                      size="16384"
                      initialSize="4096"
                      autowarmCount="1024"/>
@@ -282,18 +252,17 @@
          document).  Since Lucene internal document ids are transient,
          this cache will not be autowarmed.
       - - >
-    <documentCache class="solr.LRUCache"
+    <documentCache
                    size="512"
                    initialSize="512"
                    autowarmCount="0"/>  -->
-    <documentCache class="solr.LRUCache"
+    <documentCache
                    size="8192"
                    initialSize="8192"
                    autowarmCount="0"/>
 
     <!-- custom cache currently used by block join -->
     <cache name="perSegFilter"
-      class="solr.search.LRUCache"
       size="10"
       initialSize="0"
       autowarmCount="10"
@@ -392,14 +361,14 @@
          Solr components, but may be useful when developing custom
          plugins.
 
-         *** WARNING ***
-         The settings below authorize Solr to fetch remote files, You
-         should make sure your system has some authentication before
-         using enableRemoteStreaming="true"
+         Solr 9 ignores enableRemoteStreaming and enableStreamBody here.
+         Remote streaming (stream.url / stream.file) and stream.body are
+         off by default and are enabled only with the system properties
+         -Dsolr.enableRemoteStreaming=true and -Dsolr.enableStreamBody=true
+         (e.g. in SOLR_OPTS). The Solr 5 config had remote streaming on.
 
       -->
-    <requestParsers enableRemoteStreaming="true"
-                    multipartUploadLimitInKB="2048000"
+    <requestParsers multipartUploadLimitInKB="2048000"
                     formdataUploadLimitInKB="2048"
                     addHttpRequestToContext="false"/>
 
@@ -449,6 +418,8 @@
      <lst name="defaults">
          <str name="echoParams">explicit</str>
          <str name="df">tw</str>
+         <!-- replaces <solrQueryParser defaultOperator="AND"/> of the Solr 5 schema -->
+         <str name="q.op">AND</str>
          <str name="facet">true</str>
          <str name="facet.field">descriptor_filter</str>
          <str name="facet.field">media_collection_filter</str>
@@ -494,6 +465,7 @@
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="df">text</str>
+       <str name="q.op">AND</str>
      </lst>
   </requestHandler>
 
@@ -512,20 +484,10 @@
   </requestHandler>
 
   <!--
-    The export request handler is used to export full sorted result sets.
-    Do not change these defaults.
+    /export (full sorted result sets) is an implicit handler in Solr 9 and
+    must not be declared here: the Solr 5 definition ({!xport} + wt=xsort)
+    still loads but shadows it and behaves as a plain search limited to "rows".
   -->
-  <requestHandler name="/export" class="solr.SearchHandler">
-    <lst name="invariants">
-      <str name="rq">{!xport}</str>
-      <str name="wt">xsort</str>
-      <str name="distrib">false</str>
-    </lst>
-
-    <arr name="components">
-      <str>query</str>
-    </arr>
-  </requestHandler>
 
 
   <initParams path="/update/**,/query,/select,/tvrh,/elevate,/spell">
