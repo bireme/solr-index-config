@@ -270,6 +270,11 @@
       <field name="super_ab_ia_es"              type="text"                     indexed="true"   stored="true"   multiValued="true" />
       <field name="super_ab_ia_fr"              type="text"                     indexed="true"   stored="true"   multiValued="true" />
       <field name="super_ab_ia_pt"              type="text"                     indexed="true"   stored="true"   multiValued="true" />
+
+	  <field name="ab_extracted_ia_en"          type="text"                     indexed="true"   stored="true"   multiValued="true" />
+      <field name="ab_extracted_ia_es"          type="text"                     indexed="true"   stored="true"   multiValued="true" />
+      <field name="ab_extracted_ia_fr"          type="text"                     indexed="true"   stored="true"   multiValued="true" />
+      <field name="ab_extracted_ia_pt"          type="text"                     indexed="true"   stored="true"   multiValued="true" />
 	   
       <field name="ab_plain" type="text" indexed="true" stored="true" multiValued="true" />
       <field name="otherab"                     type="text"                     indexed="true"   stored="true"   multiValued="true" />
