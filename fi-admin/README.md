@@ -31,6 +31,9 @@ directory in git history.
   Point fields (`status` is a facet).
 - `string_no_stored` is used by the `stored="false"` string fields (`media_type_filter`,
   `media_collection_filter`, `short_title`, `collection_*`) so they are not returned by `fl=*`.
+- String fields with `indexed="false"` (`link`, `english_title`, `reference_source`,
+  `time_period_textual`, `contact_email`) set `docValues="false"`: they are only returned,
+  and docValues would reject values over 32766 bytes.
 - The DeCS types (`decs`, `decs_simple`, `decs_keyword`, `decs_qualifier`,
   `decs_authorized_category`, `text_with_decs`) are portal's tokenizer +
   `SynonymFilterFactory` chains instead of the `org.bireme.dia.analysis.*Analyzer` classes.

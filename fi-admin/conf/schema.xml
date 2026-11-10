@@ -266,10 +266,13 @@
     <field name="django_ct" type="string" indexed="true" stored="true" multiValued="false"/>
     <field name="django_id" type="string" indexed="true" stored="true" multiValued="false"/>
 
+    <!-- Note: string fields with indexed="false" also set docValues="false". They are only
+         returned, never searched/faceted/sorted, and docValues would reject values over 32766 bytes. -->
+
     <!-- common fields -->
     <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
     <field name="title" type="text" indexed="true" stored="true" termVectors="true"/>
-    <field name="link" type="string" indexed="false" stored="true" multiValued="true"/>
+    <field name="link" type="string" indexed="false" stored="true" docValues="false" multiValued="true"/>
     <field name="language" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="type" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="format" type="string" indexed="true" stored="true" multiValued="true"/>
@@ -295,7 +298,7 @@
     <field name="source_type" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="source_type_display" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="abstract" type="text" indexed="true" stored="true" termVectors="true"/>
-    <field name="time_period_textual" type="string" indexed="false" stored="true"/>
+    <field name="time_period_textual" type="string" indexed="false" stored="true" docValues="false"/>
     <field name="objective" type="text" indexed="true" stored="true" termVectors="true"/>
 
     <!-- events -->
@@ -303,7 +306,7 @@
     <field name="end_date" type="date" indexed="true" stored="true" multiValued="false"/>
     <field name="city" type="text" indexed="true" stored="true"/>
     <field name="country" type="string" indexed="true" stored="true"/>
-    <field name="contact_email" type="string" indexed="false" stored="true"/>
+    <field name="contact_email" type="string" indexed="false" stored="true" docValues="false"/>
     <field name="contact_info" type="text" indexed="true" stored="true"/>
     <field name="event_type" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="year_filter" type="dateiso" indexed="true" stored="false" multiValued="true" />
@@ -319,9 +322,9 @@
 
     <!-- bibliographic references -->
     <field name="reference_title" type="text" indexed="true" stored="true" termVectors="true" multiValued="true"/>
-    <field name="english_title" type="string" indexed="false" stored="true" multiValued="false"/>
+    <field name="english_title" type="string" indexed="false" stored="true" docValues="false" multiValued="false"/>
     <field name="reference_abstract" type="text" indexed="true" stored="true" termVectors="true" multiValued="true"/>
-    <field name="reference_source" type="string" indexed="false" stored="true" multiValued="false"/>
+    <field name="reference_source" type="string" indexed="false" stored="true" docValues="false" multiValued="false"/>
     <field name="database" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="journal" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="publication_date" type="string" indexed="true" stored="true" multiValued="false"/>
