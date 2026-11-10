@@ -72,3 +72,5 @@ queries on `/select`; AND on `/select` and on `/query` (with an explicit field);
 dynamic field; sorting on a string field; `/related`, `/terms`, `/export` and
 `/admin/ping` respond as expected. Not tested: the real requests of the application that
 uses this core, which was not available.
+
+These checks are kept as automated tests: `python3 tests/run.py best-practices` (see the [root README](../README.md#testing)).

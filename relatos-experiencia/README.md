@@ -81,3 +81,5 @@ catch-all dynamic field; sorting on a string field; `/related`, `/terms`, `/expo
 `/admin/ping` respond as expected; commit settings 15 s / `openSearcher=false` / soft
 commit off. Not tested: the real requests of the application that uses this core, which
 was not available.
+
+These checks are kept as automated tests: `python3 tests/run.py relatos-experiencia` (see the [root README](../README.md#testing)).

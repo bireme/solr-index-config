@@ -75,3 +75,5 @@ JSON and XML updates; default-field and AND queries, `fq` on `status` / `django_
 `start_date`, date ranges, DeCS expansion, `/related`, `/terms`, `/export` and
 `/admin/ping` respond as expected. Not tested: a token-for-token comparison with the
 running Solr 5.5 core, and FI-Admin itself (pysolr / django-haystack) against Solr 9.
+
+These checks are kept as automated tests: `python3 tests/run.py fi-admin` (see the [root README](../README.md#testing)).
