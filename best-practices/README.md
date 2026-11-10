@@ -55,6 +55,9 @@ history.
   request) for changes to become searchable.
 - The default field `tw` contains only `title` and `introduction`. Other fields are
   searched with an explicit field name (`keywords:…`, `objectives:…`).
+- `/query` has `df=text`, as in 5.5 (the handler default overrode the schema's
+  `defaultSearchField`), so a bare query there searches the catch-all field `text`, not
+  `tw`. Use `/select` or an explicit field.
 - `/export` only accepts fields with docValues (the `string` fields); `status` and the
   `text` fields cannot be exported.
 
@@ -63,8 +66,8 @@ history.
 Tested on 2026-11-10 with the stock `solr:9.9` Docker image (Solr 9.9.0), with no extra
 jar: the core loads with no errors and no configuration warnings; documents index through
 JSON and XML updates, including a 48,000-character value in a stored-only text field;
-a document is not visible before an explicit commit and is after it; default-field and
-AND queries on `/select` and `/query`; accented, hyphenated and phrase queries; all 11
+a document is not visible before an explicit commit and is after it; default-field (`tw`)
+queries on `/select`; AND on `/select` and on `/query` (with an explicit field); accented, hyphenated and phrase queries; all 11
 `/select` facets and per-field `facet.limit`; `fq` on facet fields; `fl=*`; the catch-all
 dynamic field; sorting on a string field; `/related`, `/terms`, `/export` and
 `/admin/ping` respond as expected. Not tested: the real requests of the application that
