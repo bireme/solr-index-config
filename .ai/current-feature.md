@@ -1,4 +1,4 @@
-# Current Feature: Convert relatos-experiencia Solr config from 5.5 to 9.9
+# Current Feature: Regression test suite for the Solr core configurations
 
 <!-- Feature Name -->
 
@@ -12,36 +12,37 @@ Completed
 
 <!-- Goals & requirements -->
 
-- The `relatos-experiencia` core starts on a stock Solr 9.9 (Lucene 9.12.2) with no schema/config errors and no configuration warnings, without any custom jar or DeCS index.
-- Every field, the dynamic field and all five copyFields still exist with the same name and the same stored/indexed/multiValued semantics.
-- Queries behave as before: default field `tw`, default operator AND, the 4 `/select` facet fields, `/related`, `/terms`, `/admin/ping`.
-- Commit policy unchanged: 15 s hard commit (`openSearcher=false`), soft commit off, updateLog on.
-- `relatos-experiencia/conf` contains only `schema.xml` and `solrconfig.xml`.
-- `relatos-experiencia/README.md` documents deployment and what changed.
-- Acceptance: the local `solr:9.9` Docker smoke test in the spec passes and `xmllint --noout` passes on both files.
+- `python3 tests/run.py` runs on a clean checkout with only Docker and Python 3 (standard library), and exits non-zero if any check fails.
+- Static checks (well-formed XML, type/field/copyField/df/facet references resolve, no Solr 9 removals) run on all five cores without Docker (`--static-only`).
+- Git-ref comparison (default `origin/main`, `--ref`) reports added/removed/changed fields, dynamicFields, copyFields, field types, uniqueKey, `/select`/`/query` `df`/`q.op`/facets and commit times, with readable output.
+- Live checks run in one throwaway Solr container (default `solr:9.9`, `--image`/`SOLR_IMAGE` to override) that is always removed (unless `--keep`).
+- `fi-admin` and `portal` run when `IAHX_JAR` and `DECS_INDEX` are found (defaults: local `../iahx/iahx-analyzer/` jar and DeCS index), and are skipped with a message otherwise.
+- Core-specific checks from the three conversions are preserved as tests (relatos-experiencia's 42 checks, best-practices and fi-admin rebuilt from their logs); `portal` and `api-metrics` get generic config-derived checks.
+- `--changed` runs only the cores whose `conf/` differs from the ref (all cores if `tests/` changed).
+- A README explains how and when to run the suite.
 
 ## Notes
 
 <!-- Any extra notes -->
 
-- Full spec: [`.ai/features/003-relatos-experiencia-solr-9-config-conversion.md`](features/003-relatos-experiencia-solr-9-config-conversion.md)
-- Model: the converted `best-practices/conf` (feature 002); all of 002's decisions are reused. `relatos-experiencia/solrconfig.xml` (5.5) differs from the best-practices 5.5 baseline only in the facet list, so the converted file should differ from `best-practices/conf/solrconfig.xml` only in the facet list (`population_group`, `thematic_area`, `country`, `collection`).
-- `relatos-experiencia/conf` is byte-identical to the deployed `plugins-idx/solr_indexes/relatos-experiencia/conf`.
-- DeCS types: remove `decs`, `decs_simple`, `decs_keyword`, `decs_code`, `decs_qualifier`, `decs_authorized_category`, `text_with_decs`; no field uses them. Other unused types are kept.
-- Process: baseline commit of the 5.5 files, then convert in place on a feature branch; delete the eight unreferenced files; config files + README only.
-- Schema: version `1.6`, `Trie*Field` → `*PointField` with docValues, `string` with docValues, `plong` for `_version_`, `WordDelimiterGraphFilterFactory` (+ `FlattenGraphFilterFactory` on the `text` index analyzer), `omitPositions="true"` on `textSpell`, `useDocValuesAsStored="false"` on `ignored`, remove `<defaultSearchField>` and `<solrQueryParser>`.
-- The four stored-only date strings (`start_date`, `end_date`, `partial_date`, `other_date`) get `docValues="false"` (fi-admin's 32766-byte fix). The stored-only `text` fields need nothing.
-- `status` is an indexed `string` here (unlike best-practices): smoke test must cover `fq` on it.
-- solrconfig: `luceneMatchVersion` `9.12`, drop `numVersionBuckets` and cache classes, `q.op=AND` on `/select` and `/query`, remove `<jmx/>`, `enableRemoteStreaming` and the explicit `/export` handler.
-- Smoke test runs with no `lib/` and no DeCS mount; must cover all five copyField sources, a >32766-byte value in `other_date`, and visibility only after an explicit commit.
-- Out of scope: `plugins-idx` (still `bireme/solr:5.5.5`; its health check only pings best-practices), the client application, tuning, new fields.
-- Risks: the client's real query patterns are unknown (application not on this machine); a full reindex is mandatory on Solr 9.
+- Full spec: [`.ai/features/004-config-test-suite.md`](features/004-config-test-suite.md)
+- Preserved source for the relatos-experiencia checks: [`.ai/features/004-assets/relatos-experiencia-smoke.sh`](features/004-assets/relatos-experiencia-smoke.sh) (42 checks; port 8985 and scratchpad paths; port, don't run as is). Sources for the others: `.ai/logs/2026-11-10-{fi-admin,best-practices}-solr-9-config-conversion.md` and the History entries above.
+- Cores: `fi-admin`, `best-practices`, `relatos-experiencia` (Lucene 9.12, converted 2026-11-10); `portal`, `api-metrics` (Lucene 9.1.1). `fi-admin` and `portal` need the `iahx-analyzer` jar in `<instanceDir>/lib/` and the DeCS index at `/opt/solr/server/resources/decs/main`.
+- Known gaps tracked as **expected failures**, not fixed here: explicit `/export` handler in `portal` and `api-metrics`; `<jmx/>` and `enableRemoteStreaming` in `portal`.
+- `/query` uses `df=text` in the converted cores (unchanged from 5.5); tests must not expect bare `/query` queries to hit `tw`.
+- `api-metrics/conf/managed-schema` exists but is unused (classic schema factory); out of scope.
+- No CI, no git hooks; manual runs only.
+- Settled in the plan: git-ref differences are report-only (`--strict` to fail); one shared ~20 s explicit-commit wait, skippable with `--fast`; WARN/ERROR filtered by the core name in Solr's log MDC; ref falls back from `origin/main` to `main`, else the comparison is skipped; DeCS terms re-derived with `/analysis/field` starting from `^d8569`.
+- Correction to the spec: default `DECS_INDEX` is `../iahx/iahx-analyzer/resources/decs/main` (the Lucene 9.12 index used for fi-admin), not `../docker-repo/solr9/...` (older `Lucene90` build).
+- Surviving fixtures from the earlier session copied to `.ai/features/004-assets/` (`fi-admin-docs.json`, `best-practices-docs.json`); they move to `tests/fixtures/` during implementation.
+- `portal` and `api-metrics` have never been loaded in a test here (api-metrics still uses `Trie*Field`, both use legacy cache classes); their behaviour on `solr:9.9` is discovered in plan step 3 and recorded as known issues.
+- The uncommitted `best-practices/README.md` `/query` fix becomes the first commit of the feature branch.
 
 ## Detailed Plan
 
 <!-- Link to detailed plan file -->
 
-[005-convert-relatos-experiencia-solr-9-config.md](plans/005-convert-relatos-experiencia-solr-9-config.md)
+[006-config-test-suite.md](plans/006-config-test-suite.md)
 
 ## History
 
@@ -58,3 +59,9 @@ Completed
 - 2026-11-10: Starting Convert relatos-experiencia Solr config from 5.5 to 9.9 — following plan [005-convert-relatos-experiencia-solr-9-config.md](plans/005-convert-relatos-experiencia-solr-9-config.md)
 - 2026-11-10: Converted relatos-experiencia `schema.xml` and `solrconfig.xml`, removed 8 unreferenced files and the 7 unused DeCS field types, added `relatos-experiencia/README.md`. `solrconfig.xml` differs from best-practices' only in the facet list; schema differs from the 5.5 baseline only in `_version_` → `plong` and `docValues="false"` on the four stored-only date strings (scripted check). Smoke test on stock `solr:9.9` (Solr 9.9.0, no jar, no DeCS index): 42/42 checks passed — core load with no warnings, JSON/XML indexing, no visibility before explicit commit, `df=tw` with all five copyField sources, AND, accents/hyphens/phrases, 4 facets, `fq` on `status`/`country`/`thematic_area`, `fl=*`, catch-all field, string sort, 40,000-character values in `other_date` and `lessons_learned`, `/related`, `/terms`, `/export`, `/admin/ping`, commit settings. Deviation from the plan (test only, no config change): `/query` has `df=text` in the 5.5 baseline, so a bare query there searches the catch-all `text` field, not `tw`; kept as is and documented in the README; AND on `/query` verified with an explicit field.
 - 2026-11-10: Review: no defects found, no config changes. Diff checked against goals: schema types identical to converted best-practices, fields differ from 5.5 only as intended, solrconfig differs from best-practices only in facets, no scope creep. Indexed `string` fields with docValues keep the same 32766-byte limit they already had as indexed terms in 5.5, so no regression there. Corrected the spec's acceptance wording: `/query` uses `df=text` (unchanged from 5.5), so bare queries there do not search `tw`. Noted outside this feature: `best-practices/README.md` says default-field queries were validated on `/query`, but best-practices' `/query` also has `df=text`.
+- 2026-11-10: Completed **Convert relatos-experiencia Solr config from 5.5 to 9.9**. `relatos-experiencia/conf` (schema.xml, solrconfig.xml) now loads on a stock Solr 9.9 with no custom jar or DeCS index: Point fields and docValues, unused DeCS types removed, stored-only date strings with docValues off, `q.op=AND` in the handlers, original commit policy (explicit commits required); `solrconfig.xml` differs from best-practices' only in the facet list; deployment notes in `relatos-experiencia/README.md`. Merged to `main` and pushed. Spec: [003](features/003-relatos-experiencia-solr-9-config-conversion.md), plan: [005](plans/005-convert-relatos-experiencia-solr-9-config.md), log: [2026-11-10](logs/2026-11-10-relatos-experiencia-solr-9-config-conversion.md). Open: the client application's real requests are untested; `plugins-idx` still runs Solr 5.5; `best-practices/README.md` wrongly says default-field queries were validated on `/query` (its `df` is `text`).
+- 2026-11-10: Starting Regression test suite for the Solr core configurations — following plan [006-config-test-suite.md](plans/006-config-test-suite.md)
+- 2026-11-10: Built the suite: `tests/run.py` + `tests/lib/` (config parser, git-ref diff, container/HTTP helpers, base test classes, known issues) + `tests/cores/test_<core>.py` + fixtures; root `README.md` with a Testing section and pointers in the three core READMEs. Full run on `solr:9.9`: 243 tests, exit 0 — api-metrics 22 passed / 8 known issues, best-practices 55, fi-admin 57 (1 skipped), portal 23 (2 skipped) / 5 known issues, relatos-experiencia 70. All five cores load on Solr 9.9, including `portal` and `fi-admin` with the analyzer jar and DeCS index.
+- 2026-11-10: Discovery on `portal` and `api-metrics` (recorded in `tests/lib/known_issues.py`, not fixed): both have the explicit `/export` handler (returns 10 rows instead of all), `<jmx/>` and `enableRemoteStreaming`; `portal` also has `<lib dir="../lib"/>` (ignored: `<lib/>` is disabled by default since Solr 9.8), `enableStreamBody` and a warning for the 4096-dimension `vector` field; `api-metrics` also has Trie field types, `WordDelimiterFilterFactory`, `<solrQueryParser>` and `numVersionBuckets` (all load with warnings). `api-metrics` `/select` has no `q.op`, so its default operator is OR.
+- 2026-11-10: Verification: five mutation checks caught and reverted (removed copyField, `q.op` OR, undefined field type, docValues on a stored-only string in fi-admin, removed known-issue entry); missing jar skips `fi-admin`/`portal` live checks with exit 0; Docker unavailable gives exit 2 and `--static-only` still works; `--changed` selects only touched cores; no container or files left behind. Deviations from the plan: Solr 10 needs `--user-managed` (standalone) at startup, added to the harness; core-specific suites went in one commit with the framework instead of one commit each; `.ai/features/004-assets/` removed after the port. On `solr:10` (informative): best-practices and relatos-experiencia pass except `wt=php`/`phps`, which Solr 10 rejects (HTTP 400); api-metrics loads but its known-warning list differs.
+- 2026-11-11: Review: all goals met, no defects found, no code changes. Re-ran on `solr:9.9`: 243 tests, exit 0, ~31 s; `--static-only` exit 0. Checked: skips are correct (fi-admin opens a searcher on hard commit; portal's `<updateLog>` is commented out, so it has no transaction log; portal `/select` has no facets); the legacy cache classes in portal/api-metrics are commented out, so the Notes line saying they use them was wrong. Small gaps, not blocking: `initParams` `df` is not checked by the static reference check or shown in the git-ref diff (all cores' `df=text` resolve today); a `docker run` failure ends in a traceback instead of a message. Before completing: delete or ignore `TEMP.txt`, commit the spec and plan, and drop the stale `004-assets` references from Notes.
