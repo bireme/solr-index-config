@@ -11,6 +11,39 @@ standalone core (`schema.xml` and `solrconfig.xml`, classic schema).
 | `relatos-experiencia` | no | [README](relatos-experiencia/README.md) |
 | `api-metrics` | no | |
 
+## Copying data from Solr 5.5
+
+Solr 9 cannot open a Solr 5 index. `tools/copy_index.py` reads every document of a running
+Solr 5.5 core over HTTP and posts it to the Solr 9.9 core, for `fi-admin`,
+`best-practices` and `relatos-experiencia`. Standard library only.
+
+```
+python3 tools/copy_index.py <core> --source http://old:8983/solr/<core> --target http://new:8983/solr/<core> --dry-run
+python3 tools/copy_index.py <core> --source ... --target ...
+python3 tools/copy_index.py <core> --source ... --target ... --verify-only
+```
+
+`--dry-run` only reads the source: it reports what will happen to each unstored field and
+prints the first document as it would be sent. A real run copies, commits, and compares
+document and facet counts between the two cores (`--query 'tw:dengue'` adds result-count
+comparisons). Exit code: `0` equal, `1` rejected documents or differences, `2` error.
+Other options: `--rows`, `--fq` (copy a subset), `--failed-file`.
+
+A query only returns stored fields, so the script reads the core's `schema.xml` here and:
+
+- drops `_version_`;
+- leaves fields filled only by copyField (`tw`, `ti`, `title_sort`, …) for Solr to rebuild;
+- removes the copied values from stored copyField destinations (in `fi-admin`: `mh`,
+  `language`, `publication_year`), which would otherwise be duplicated or rejected;
+- reads unstored string fields back from their indexed terms (in `fi-admin`:
+  `collection_*`, `media_type_filter`, and `year_filter` / `ths_exact_term` if present).
+
+`best-practices` and `relatos-experiencia` are copied without loss. `fi-admin` is not:
+see ["Copying from the Solr 5.5 core"](fi-admin/README.md#copying-from-the-solr-55-core).
+
+Stop indexing in the application during the copy, or run it again afterwards with `--fq`
+on the changed documents. Deletions made during the copy are not carried over.
+
 ## Testing
 
 Run the tests whenever a `schema.xml` or `solrconfig.xml` changes, before pushing.

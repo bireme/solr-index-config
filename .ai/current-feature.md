@@ -1,4 +1,4 @@
-# Current Feature: Regression test suite for the Solr core configurations
+# Current Feature
 
 <!-- Feature Name -->
 
@@ -6,43 +6,19 @@
 
 <!-- Not Started|In Progress|Completed -->
 
-Completed
+Not Started
 
 ## Goals
 
 <!-- Goals & requirements -->
 
-- `python3 tests/run.py` runs on a clean checkout with only Docker and Python 3 (standard library), and exits non-zero if any check fails.
-- Static checks (well-formed XML, type/field/copyField/df/facet references resolve, no Solr 9 removals) run on all five cores without Docker (`--static-only`).
-- Git-ref comparison (default `origin/main`, `--ref`) reports added/removed/changed fields, dynamicFields, copyFields, field types, uniqueKey, `/select`/`/query` `df`/`q.op`/facets and commit times, with readable output.
-- Live checks run in one throwaway Solr container (default `solr:9.9`, `--image`/`SOLR_IMAGE` to override) that is always removed (unless `--keep`).
-- `fi-admin` and `portal` run when `IAHX_JAR` and `DECS_INDEX` are found (defaults: local `../iahx/iahx-analyzer/` jar and DeCS index), and are skipped with a message otherwise.
-- Core-specific checks from the three conversions are preserved as tests (relatos-experiencia's 42 checks, best-practices and fi-admin rebuilt from their logs); `portal` and `api-metrics` get generic config-derived checks.
-- `--changed` runs only the cores whose `conf/` differs from the ref (all cores if `tests/` changed).
-- A README explains how and when to run the suite.
-
 ## Notes
 
 <!-- Any extra notes -->
 
-- Full spec: [`.ai/features/004-config-test-suite.md`](features/004-config-test-suite.md)
-- Preserved source for the relatos-experiencia checks: [`.ai/features/004-assets/relatos-experiencia-smoke.sh`](features/004-assets/relatos-experiencia-smoke.sh) (42 checks; port 8985 and scratchpad paths; port, don't run as is). Sources for the others: `.ai/logs/2026-11-10-{fi-admin,best-practices}-solr-9-config-conversion.md` and the History entries above.
-- Cores: `fi-admin`, `best-practices`, `relatos-experiencia` (Lucene 9.12, converted 2026-11-10); `portal`, `api-metrics` (Lucene 9.1.1). `fi-admin` and `portal` need the `iahx-analyzer` jar in `<instanceDir>/lib/` and the DeCS index at `/opt/solr/server/resources/decs/main`.
-- Known gaps tracked as **expected failures**, not fixed here: explicit `/export` handler in `portal` and `api-metrics`; `<jmx/>` and `enableRemoteStreaming` in `portal`.
-- `/query` uses `df=text` in the converted cores (unchanged from 5.5); tests must not expect bare `/query` queries to hit `tw`.
-- `api-metrics/conf/managed-schema` exists but is unused (classic schema factory); out of scope.
-- No CI, no git hooks; manual runs only.
-- Settled in the plan: git-ref differences are report-only (`--strict` to fail); one shared ~20 s explicit-commit wait, skippable with `--fast`; WARN/ERROR filtered by the core name in Solr's log MDC; ref falls back from `origin/main` to `main`, else the comparison is skipped; DeCS terms re-derived with `/analysis/field` starting from `^d8569`.
-- Correction to the spec: default `DECS_INDEX` is `../iahx/iahx-analyzer/resources/decs/main` (the Lucene 9.12 index used for fi-admin), not `../docker-repo/solr9/...` (older `Lucene90` build).
-- Surviving fixtures from the earlier session copied to `.ai/features/004-assets/` (`fi-admin-docs.json`, `best-practices-docs.json`); they move to `tests/fixtures/` during implementation.
-- `portal` and `api-metrics` have never been loaded in a test here (api-metrics still uses `Trie*Field`, both use legacy cache classes); their behaviour on `solr:9.9` is discovered in plan step 3 and recorded as known issues.
-- The uncommitted `best-practices/README.md` `/query` fix becomes the first commit of the feature branch.
-
 ## Detailed Plan
 
 <!-- Link to detailed plan file -->
-
-[006-config-test-suite.md](plans/006-config-test-suite.md)
 
 ## History
 
@@ -65,3 +41,4 @@ Completed
 - 2026-11-10: Discovery on `portal` and `api-metrics` (recorded in `tests/lib/known_issues.py`, not fixed): both have the explicit `/export` handler (returns 10 rows instead of all), `<jmx/>` and `enableRemoteStreaming`; `portal` also has `<lib dir="../lib"/>` (ignored: `<lib/>` is disabled by default since Solr 9.8), `enableStreamBody` and a warning for the 4096-dimension `vector` field; `api-metrics` also has Trie field types, `WordDelimiterFilterFactory`, `<solrQueryParser>` and `numVersionBuckets` (all load with warnings). `api-metrics` `/select` has no `q.op`, so its default operator is OR.
 - 2026-11-10: Verification: five mutation checks caught and reverted (removed copyField, `q.op` OR, undefined field type, docValues on a stored-only string in fi-admin, removed known-issue entry); missing jar skips `fi-admin`/`portal` live checks with exit 0; Docker unavailable gives exit 2 and `--static-only` still works; `--changed` selects only touched cores; no container or files left behind. Deviations from the plan: Solr 10 needs `--user-managed` (standalone) at startup, added to the harness; core-specific suites went in one commit with the framework instead of one commit each; `.ai/features/004-assets/` removed after the port. On `solr:10` (informative): best-practices and relatos-experiencia pass except `wt=php`/`phps`, which Solr 10 rejects (HTTP 400); api-metrics loads but its known-warning list differs.
 - 2026-11-11: Review: all goals met, no defects found, no code changes. Re-ran on `solr:9.9`: 243 tests, exit 0, ~31 s; `--static-only` exit 0. Checked: skips are correct (fi-admin opens a searcher on hard commit; portal's `<updateLog>` is commented out, so it has no transaction log; portal `/select` has no facets); the legacy cache classes in portal/api-metrics are commented out, so the Notes line saying they use them was wrong. Small gaps, not blocking: `initParams` `df` is not checked by the static reference check or shown in the git-ref diff (all cores' `df=text` resolve today); a `docker run` failure ends in a traceback instead of a message. Before completing: delete or ignore `TEMP.txt`, commit the spec and plan, and drop the stale `004-assets` references from Notes.
+- 2026-11-11: Completed **Regression test suite for the Solr core configurations**. `python3 tests/run.py` (standard library + Docker) checks all five cores: static checks without Docker (`--static-only`), a `+`/`-`/`~` diff against `origin/main`, and live checks in one throwaway Solr container (default `solr:9.9`, `--image`), with the analyzer jar and DeCS index for `fi-admin` and `portal` (skipped if not found). Core-specific checks from the three conversions are kept as tests; `portal` and `api-metrics` get generic ones, and their Solr 5 leftovers are tracked as known issues in `tests/lib/known_issues.py`. 243 tests, exit 0. Usage in the root `README.md`. Merged to `main` and pushed. Spec: [004](features/004-config-test-suite.md), plan: [006](plans/006-config-test-suite.md), log: [2026-11-11](logs/2026-11-11-config-test-suite.md). Open: portal/api-metrics known issues not fixed (explicit `/export`, `<jmx/>`, `enableRemoteStreaming`, portal `<lib/>` and no `<updateLog>`, api-metrics Trie fields and OR default); `initParams` `df` not covered by the static check or the git-ref diff.

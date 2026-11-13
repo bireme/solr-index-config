@@ -16,7 +16,8 @@ directory in git history.
    `server` directory of the installation. In the official Docker image that is
    `/opt/solr/server/resources/decs/main`. The index must be in Lucene 9 format.
 4. **Full reindex.** Solr 9 cannot open a Solr 5 index. Start with an empty `data/`
-   directory and rebuild the index from FI-Admin.
+   directory and rebuild the index from FI-Admin, or copy the documents from the running
+   Solr 5.5 core (see "Copying from the Solr 5.5 core" below).
 5. **Optional system properties.** Solr 9 ignores `enableRemoteStreaming` in
    `solrconfig.xml`. If anything depends on `stream.url`, `stream.file` or `stream.body`,
    start Solr with `-Dsolr.enableRemoteStreaming=true` and/or `-Dsolr.enableStreamBody=true`.
@@ -64,6 +65,29 @@ directory in git history.
   translations, synonyms and category codes. Free-text words are not expanded there;
   `descriptor`, `mh` and `mj` expand plain terms too.
 - `/export` only accepts fields with docValues (`string`, numeric and date fields).
+
+## Copying from the Solr 5.5 core
+
+`python3 tools/copy_index.py fi-admin --source ... --target ...` (see the
+[root README](../README.md#copying-data-from-solr-55)) copies the documents over HTTP. It
+is faster than a rebuild and does not touch the database, but one field is not copied
+exactly:
+
+- `text` (Haystack's document field) is not stored. FI-Admin fills it from a template per
+  document type; it feeds `tw` and is the default field of `/query`. The script rebuilds
+  it where the template only uses stored fields: `main.resource` (title + abstract),
+  `events.event`, `multimedia.media` and `oer.oer` (title); `biblioref` sends it empty.
+  For the other types — `title.title`, `institution.institution`, `leisref.act` — the
+  template adds content that reaches `tw` only through `text` (ISSN and subtitle; address,
+  contacts and units; act number, year, issuer, ementas and notes). After the copy, rebuild
+  those models from FI-Admin against the new core (`manage.py update_index title
+  institution leisref`). The script lists the affected types and their document counts.
+- `ths_termall` is tokenized and not stored, so it cannot be copied. The current FI-Admin
+  code does not write it; if the source index has it, the script stops unless
+  `--accept-loss` is given.
+
+The other unstored fields are recovered: `collection_*`, `media_type_filter`,
+`year_filter` and `ths_exact_term` from their indexed terms, the rest by copyField.
 
 ## Validation
 
